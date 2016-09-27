@@ -46,3 +46,4 @@ _region_.tex
 *.csv
 *.txt
 *.gtf
+*.Rds

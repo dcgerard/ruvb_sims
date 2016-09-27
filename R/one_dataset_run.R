@@ -1,19 +1,17 @@
 library(ggplot2)
 library(reshape2)
 library(gridExtra)
-source("../Code/data_generators.R")
-source("../Code/adjustment_methods.R")
-source("../Code/summary_stat_methods.R")
-source("../Code/evaluations.R")
+source("./Code/data_generators.R")
+source("./Code/adjustment_methods.R")
+source("./Code/summary_stat_methods.R")
+source("./Code/evaluations.R")
 
-"#52EF87"
-fill_color <- "grey90"
 fill_color <- "white"
 seed_seq <- 117:119
 for (index in 1:length(seed_seq)) {
     current_seed <- seed_seq[index]
     set.seed(current_seed)
-    dout <- pois_thin(Nsamp = 10, nullpi = 1, path = "../Output/gtex_tissue_gene_reads_v6p",
+    dout <- pois_thin(Nsamp = 10, nullpi = 1, path = "./Output/gtex_tissue_gene_reads_v6p/",
                       ncontrol = 300, Ngene = 10000)
     Y <- dout$Y
     X <- dout$X
@@ -29,7 +27,7 @@ for (index in 1:length(seed_seq)) {
     }
 }
 
-pdf(file = "../Output/figures/all_null.pdf", height = 2, width = 6, family = "Times", colormodel = "cmyk")
+pdf(file = "./Output/figures/all_null.pdf", height = 2, width = 6, family = "Times", colormodel = "cmyk")
 longdat <- melt(pmat[pmat$seed == seed_seq[1], ], id.vars = "seed")
 p1 <- ggplot(data = longdat, mapping = aes(x = value, color = I("black"), fill = I(fill_color))) +
     geom_histogram(bins = 15) +

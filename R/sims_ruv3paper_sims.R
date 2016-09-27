@@ -1,10 +1,7 @@
-library(Rmpi)
-library(snow)
-
 one_rep <- function(new_params, current_params) {
     return_vec <- tryCatch(expr = {
-        source("../Code/data_generators.R")
-        source("../Code/adjustment_methods.R")
+        source("./Code/data_generators.R")
+        source("./Code/adjustment_methods.R")
         args_val <- append(current_params, new_params)
         set.seed(new_params$current_seed)
         d_out <- datamaker_counts_only(args_val)
@@ -20,14 +17,7 @@ one_rep <- function(new_params, current_params) {
         colnames(X) <- c("Intercept", "Treatment")
         Y <- t(log2(as.matrix(d_out$input$counts + 1)))
 
-
         num_sv <- max(sva::num.sv(t(Y), mod = X, method = "be"), 1)
-
-        rmax <- min(sum(control_genes), nrow(X) - ncol(X))
-        ## num_sv <- max(cate::est.confounder.num(~ Treatment, X.data = as.data.frame(X),
-        ##                                        Y = Y, rmax = rmax,
-        ##                                        nRepeat = 100, bcv.plot = FALSE)$r, 1)
-
 
         start.time <- proc.time()
         method_list            <- list()
@@ -37,15 +27,10 @@ one_rep <- function(new_params, current_params) {
         method_list$ruv3       <- ruv3(Y = Y, X = X, num_sv = num_sv,
                                        control_genes = control_genes,
                                        multiplier = FALSE)
-        ## method_list$ruv3_rsvar <- ruv3(Y = Y, X = X, num_sv = num_sv,
-        ##                                control_genes = control_genes,
-        ##                                multiplier = TRUE)
         method_list$ruv4       <- ruv4(Y = Y, X = X, num_sv = num_sv,
                                        control_genes = control_genes)
         method_list$ruv4_rsvar <- ruv4_rsvar_ebayes(Y = Y, X = X, num_sv = num_sv,
                                                     control_genes = control_genes)
-        ## method_list$ruvem   <- ruvem(Y = Y, X = X, num_sv = num_sv,
-        ##                              control_genes = control_genes)
         method_list$catenc     <- cate_nc(Y = Y, X = X, num_sv = num_sv,
                                           control_genes = control_genes,
                                           calibrate = TRUE)
@@ -54,17 +39,6 @@ one_rep <- function(new_params, current_params) {
         method_list$ruvb       <- ruvb_bfa_gs_linked(Y = Y, X = X, num_sv = num_sv,
                                                      control_genes = control_genes)
 
-
-
-        ## false_signs <- sign(beta_true[!control_genes]) != sign(method_list$ruvb$betahat)
-        ## sorder <- order(method_list$ruvb$svalues)
-        ## qplot(1:(args_val$Ngene - args_val$ncontrols),
-        ##       c(method_list$ruvb$svalues)[sorder], col = false_signs[sorder])
-
-        ## fsr <- cumsum(false_signs[sorder]) / (1:(args_val$Ngene - args_val$ncontrols))
-
-        ## plot(c(method_list$ruvb$svalues)[sorder], fsr)
-        ## abline(0, 1)
 
         get_mse <- function(args, beta_true, control_genes) {
             if (length(args$betahat) == length(control_genes)) {
@@ -138,7 +112,7 @@ for (list_index in 1:nrow(par_vals)) {
 args_val              <- list()
 args_val$log2foldsd   <- 0.8
 args_val$tissue       <- "muscle"
-args_val$path         <- "../Output/gtex_tissue_gene_reads_v6p/"
+args_val$path         <- "./Output/gtex_tissue_gene_reads_v6p/"
 args_val$Ngene        <- 1000
 args_val$log2foldmean <- 0
 args_val$skip_gene    <- 0
@@ -147,22 +121,16 @@ args_val$skip_gene    <- 0
 
 ## ## If on your own computer, use this
 library(parallel)
+library(snow)
 cl <- makeCluster(detectCores() - 2)
 sout <- t(snow::parSapply(cl = cl, par_list, FUN = one_rep, current_params = args_val))
 stopCluster(cl)
 
-## ## on RCC, use this
-## np <- mpi.universe.size() - 1
-## cluster <- makeMPIcluster(np)
-## sout <- t(snow::parSapply(cl = cluster, X = par_list, FUN = one_rep, current_params = args_val))
-## stopCluster(cluster)
-## mpi.exit()
 
-
-save(sout, file = "../Output/sims_out/general_sims2.Rd")
+save(sout, file = "./Output/sims_out/general_sims2.Rd")
 mse_mat <- cbind(par_vals, sout[, 1:8])
 auc_mat <- cbind(par_vals, sout[, 9:16])
 cov_mat <- cbind(par_vals, sout[, 17:24])
-write.csv(mse_mat, file = "../Output/sims_out/mse_mat2.csv", row.names = FALSE)
-write.csv(auc_mat, file = "../Output/sims_out/auc_mat2.csv", row.names = FALSE)
-write.csv(cov_mat, file = "../Output/sims_out/cov_mat2.csv", row.names = FALSE)
+write.csv(mse_mat, file = "./Output/sims_out/mse_mat2.csv", row.names = FALSE)
+write.csv(auc_mat, file = "./Output/sims_out/auc_mat2.csv", row.names = FALSE)
+write.csv(cov_mat, file = "./Output/sims_out/cov_mat2.csv", row.names = FALSE)

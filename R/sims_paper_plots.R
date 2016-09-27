@@ -5,9 +5,9 @@ library(reshape2)
 library(ggplot2)
 library(dplyr)
 
-mse_mat <- read.csv("../Output/sims_out/mse_mat2.csv")
-auc_mat <- read.csv("../Output/sims_out/auc_mat2.csv")
-cov_mat <- read.csv("../Output/sims_out/cov_mat2.csv")
+mse_mat <- read.csv("./Output/sims_out/mse_mat2.csv")
+auc_mat <- read.csv("./Output/sims_out/auc_mat2.csv")
+cov_mat <- read.csv("./Output/sims_out/cov_mat2.csv")
 
 colnames(cov_mat)[6:ncol(cov_mat)] <- c("OLS", "RUV2", "RUV3", "RUV4",
                                         "RUV4c", "CATE", "CATEc",
@@ -20,7 +20,7 @@ colnames(auc_mat)[6:ncol(auc_mat)] <- c("OLS", "RUV2", "RUV3", "RUV4",
 
 longdat <- melt(data = cov_mat, id.vars = 1:5)
 longdat$Nsamp <- longdat$Nsamp * 2
-pdf(file = "../Output/figures/coverage.pdf", height = 8, width = 6.5, family = "Times")
+pdf(file = "./Output/figures/coverage.pdf", height = 8, width = 6.5, family = "Times")
 p <- ggplot(data = longdat, mapping = aes(y = value, x = variable)) +
     geom_boxplot(outlier.size = 0.2, size = 0.2) +
     facet_grid(nullpi + ncontrols ~ Nsamp) +
@@ -36,7 +36,7 @@ dev.off()
 longdat <- melt(data = cov_mat, id.vars = 1:5)
 longdat$Nsamp <- longdat$Nsamp * 2
 longdat <- filter(longdat, nullpi == 0.5)
-pdf(file = "../Output/figures/coverage_5.pdf", height = 3.2, width = 6.5, family = "Times")
+pdf(file = "./Output/figures/coverage_5.pdf", height = 3.2, width = 6.5, family = "Times")
 p <- ggplot(data = longdat, mapping = aes(y = value, x = variable)) +
     geom_boxplot(outlier.size = 0.2, size = 0.2) +
     facet_grid(ncontrols ~ Nsamp) +
@@ -69,7 +69,7 @@ colnames(dummy_dat) <- c("nullpi", "Nsamp", "ncontrols", "max_med")
 longdat <- filter(melt(data = auc_mat, id.vars = 1:5), nullpi != 1)
 longdat$Nsamp <- longdat$Nsamp * 2
 dummy_dat$Nsamp <- dummy_dat$Nsamp * 2
-pdf(file = "../Output/figures/auc.pdf", height = 8, width = 6.5, family = "Times")
+pdf(file = "./Output/figures/auc.pdf", height = 8, width = 6.5, family = "Times")
 p <- ggplot(data = longdat, mapping = aes(y = value, x = variable)) +
     geom_boxplot(outlier.size = 0.2, size = 0.2) +
     facet_grid(nullpi + ncontrols ~ Nsamp) +
@@ -87,7 +87,7 @@ diff_mat <- select(diff_mat, -RUVB)
 longdat <- filter(melt(data = diff_mat, id.vars = 1:5), nullpi != 1)
 longdat$Nsamp <- longdat$Nsamp * 2
 dummy_dat$Nsamp <- dummy_dat$Nsamp * 2
-pdf(file = "../Output/figures/diff.pdf", height = 7.5, width = 6.5, family = "Times")
+pdf(file = "./Output/figures/diff.pdf", height = 7.5, width = 6.5, family = "Times")
 p <- ggplot(data = longdat, mapping = aes(y = value, x = variable)) +
     geom_boxplot(outlier.size = 0.2, size = 0.2) +
     facet_grid(nullpi + ncontrols ~ Nsamp) +
@@ -107,7 +107,7 @@ longdat <- filter(melt(data = diff_mat, id.vars = 1:5), nullpi != 1)
 longdat$Nsamp <- longdat$Nsamp * 2
 longdat <- filter(longdat, nullpi == 0.5)
 dummy_dat$Nsamp <- dummy_dat$Nsamp * 2
-pdf(file = "../Output/figures/diff_5.pdf", height = 3.2, width = 6.5, family = "Times")
+pdf(file = "./Output/figures/diff_5.pdf", height = 3.2, width = 6.5, family = "Times")
 p <- ggplot(data = longdat, mapping = aes(y = value, x = variable)) +
     geom_boxplot(outlier.size = 0.2, size = 0.2) +
     facet_grid(ncontrols ~ Nsamp) +
@@ -131,7 +131,7 @@ auc_mat$bm3 <- auc_mat$RUVB - auc_mat$RUV3
 
 temp <- filter(auc_mat, nullpi != 1)
 
-pdf(file = "../Output/figures/bm2.pdf", family = "Times", height = 3, width = 3)
+pdf(file = "./Output/figures/bm2.pdf", family = "Times", height = 3, width = 3)
 p1 <- ggplot(data = temp, mapping = aes(y = bm2, x = as.factor(Nsamp))) +
     facet_grid(nullpi ~ ncontrols) +
     geom_boxplot(outlier.size = 0.3, size = 0.2) +
@@ -142,7 +142,7 @@ p1 <- ggplot(data = temp, mapping = aes(y = bm2, x = as.factor(Nsamp))) +
 print(p1)
 dev.off()
 
-pdf(file = "../Output/figures/tm2.pdf", family = "Times", height = 3, width = 3)
+pdf(file = "./Output/figures/tm2.pdf", family = "Times", height = 3, width = 3)
 p2 <- ggplot(data = temp, mapping = aes(y = threem2, x = as.factor(Nsamp))) +
     facet_grid(nullpi ~ ncontrols) +
     geom_boxplot(outlier.size = 0.2, size = 0.2) +
@@ -167,7 +167,7 @@ ggplot(data = temp, mapping = aes(y = bmc, x = as.factor(Nsamp))) +
     xlab("Sample Size") + ylab("RUVB - RUV2")
 
 ## check methods
-## source("../code/adjustment_methods.R")
+## source("./Code/adjustment_methods.R")
 ## n <- 10
 ## p <- 100
 ## ncov <- 2

@@ -32,7 +32,7 @@ tissue_vec <- c("adiposetissue", "bladder", "bloodvessel", "breast",
                 "esophagus", "heart", "liver", "muscle", "pituitary",
                 "salivarygland", "smallintestine", "stomach", "thyroid")
 method_names <- c("OLS", "RUV2", "RUV3", "RUV4", "RUV4c", "CATE", "CATEc", "RUVB")
-num_sv_seq <- readRDS("../Output/ruvbout/num_sv.Rds")
+num_sv_seq <- readRDS("./Output/ruvbout/num_sv.Rds")
 num_look_seq <- c(100, 300, 500)
 
 auc_mat  <- matrix(NA, nrow = length(tissue_vec), ncol = length(method_names))
@@ -44,7 +44,7 @@ for(tissue_index in 1:length(tissue_vec)) {
     current_tissue <- tissue_vec[tissue_index]
     num_sv <- num_sv_seq[tissue_index]
 
-    dat <- readRDS(paste0("../Output/cleaned_gtex_data/", current_tissue, ".Rds"))
+    dat <- readRDS(paste0("./Output/cleaned_gtex_data/", current_tissue, ".Rds"))
     onsex <- dat$chrom == "X" | dat$chrom == "Y"
     onsex[is.na(onsex)] <- FALSE
     dat$ctl[onsex] <- FALSE
@@ -53,7 +53,7 @@ for(tissue_index in 1:length(tissue_vec)) {
     cat(tissue_index, "\n")
 
 
-    ruvbout  <- readRDS(paste0("../Output/ruvbout/ruvbout_", current_tissue, ".Rds"))
+    ruvbout  <- readRDS(paste0("./Output/ruvbout/ruvbout_", current_tissue, ".Rds"))
     olsout   <- ols(Y = t(dat$Y), X = dat$X)
     ruv2out  <- ruv::RUV2(Y = t(dat$Y), X = dat$X[, 2, drop = FALSE], ctl = dat$ctl,
                           k = num_sv, Z = dat$X[, -2, drop = FALSE])
@@ -134,6 +134,6 @@ pgd <- ggplot(data = longdat, mapping = aes(x = Method, y = Tissue, fill = Propo
     theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
     facet_grid(.~K) + theme(strip.background = element_rect(fill="white"))
 
-pdf(file = "../Output/figures/propk.pdf", family = "Times", height = 5, width = 6.5)
+pdf(file = "./Output/figures/propk.pdf", family = "Times", height = 5, width = 6.5)
 print(pgd)
 dev.off()

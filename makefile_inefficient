@@ -1,0 +1,27 @@
+all: sims gtex_analysis one_data
+
+extract:
+	mkdir -p Output/gtex_tissue_gene_reads_v6p
+	Rscript ./R/gtex_extract_tissues_v6p.R
+
+clean: extract
+	mkdir -p Output/cleaned_gtex_data
+	Rscript ./R/gtex_clean.R
+
+gtex_analysis: clean
+	mkdir -p Output/ruvbout
+	mkdir -p Output/figures
+	Rscript ./R/gtex_topk_analysis.R
+	Rscript ./R/gtex_raster_plot.R
+	Rscript ./R/gtex_most_sig_qq.R
+
+sims: extract
+	mkdir -p Output/figures
+	mkdir -p Output/sims_out
+	Rscript ./R/sims_ruv3paper_sims.R
+	Rscript ./R/sims_paper_plots.R
+	Rscript ./R/sims_paper_plots_line.R
+
+one_data: extract
+	mkdir -p Output/figures
+	Rscript ./R/one_dataset_run.R

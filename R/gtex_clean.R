@@ -15,7 +15,7 @@ tissue_vec <- c("adiposetissue", "bladder", "bloodvessel", "breast",
 
 
 
-gtout <- read.table(file = "../Data/gencode.v19.genes.V6p_model.patched_contigs.gtf",
+gtout <- read.table(file = "./Data/gencode.v19.genes.V6p_model.patched_contigs.gtf",
                     skip = 6, sep = "\t")
 temp1 <- stringr::str_split(gtout[, 9], pattern = ";")
 
@@ -30,7 +30,7 @@ colnames(exon)[1:8] <- c("CHR", "annotation_source", "feature_type", "gene_start
                          "gene_end", "score", "strand", "phase")
 
 ## this file is from the GTEX portal
-write.csv(exon, file = "../Output/gencode.v19.genes.V6p_model.patched_contigs.txt")
+write.csv(exon, file = "./Output/gencode.v19.genes.V6p_model.patched_contigs.txt")
 
 ## Associate genes with chromosome position
 gene_names <- rep(NA, length = length(exon$gene_id))
@@ -42,7 +42,7 @@ for (index in 1:length(gene_names)) {
 for (tissue_index in 1:length(tissue_vec)) {
     current_tissue <- tissue_vec[tissue_index]
     ## Read in Data
-    tissuedat <- read.csv(paste0("../Output/gtex_tissue_gene_reads_v6p/", current_tissue,
+    tissuedat <- read.csv(paste0("./Output/gtex_tissue_gene_reads_v6p/", current_tissue,
                                  ".csv"))
 
 
@@ -83,7 +83,7 @@ for (tissue_index in 1:length(tissue_vec)) {
     }
 
     ## Now get the X matrix
-    pheno <- read.table("../Data/GTEx_Data_V6_Annotations_SubjectPhenotypesDS.txt",
+    pheno <- read.table("./Data/GTEx_Data_V6_Annotations_SubjectPhenotypesDS.txt",
                         header = TRUE)
     match_out <- match(colnames(Y), pheno$SUBJID)
     X <- model.matrix(~as.factor(pheno$GENDER[match_out]))
@@ -97,8 +97,8 @@ for (tissue_index in 1:length(tissue_vec)) {
     ## with the file gene2ensemble.gz which can be found at
     ## [ftp://ftp.ncbi.nih.gov/gene/DATA/](ftp://ftp.ncbi.nih.gov/gene/DATA/).
 
-    hkgenes <- read.table("../Data/HK_genes.txt")
-    gene2ensembl <- read.table("../Data/gene2ensembl.gz")
+    hkgenes <- read.table("./Data/HK_genes.txt")
+    gene2ensembl <- read.table("./Data/gene2ensembl.gz")
     ## V4 is NCBI, V3 is Ensemble
 
     ctl <- rep(FALSE, length = nrow(Y))
@@ -120,11 +120,10 @@ for (tissue_index in 1:length(tissue_vec)) {
                 stop ("to many matches in Y")
             }
         }
-        cat(current_tissue, index, "\n")
     }
 
     ## Save file
     final_tiss <- list(Y = Y, X = X, ctl = ctl, chrom = subtissue$CHR)
     saveRDS(object = final_tiss,
-            file = paste0("../Output/cleaned_gtex_data/", current_tissue, ".Rds"))
+            file = paste0("./Output/cleaned_gtex_data/", current_tissue, ".Rds"))
 }

@@ -18,7 +18,7 @@ good_tissue_labels <- c("Adipose Tissue", "Bladder", "Blood Vessel", "Breast",
 num_sv_vec <- rep(NA, length = length(tissue_vec))
 for (tissue_index in 1:length(tissue_vec)) {
     current_tissue <- tissue_vec[tissue_index]
-    ruvbout <- readRDS(file = paste0("../Output/ruvbout/ruvbout_", current_tissue, ".Rds"))
+    ruvbout <- readRDS(file = paste0("./Output/ruvbout/ruvbout_", current_tissue, ".Rds"))
 
     obs_num <- which.min(c(ruvbout$lfsr2))
 
@@ -43,7 +43,7 @@ for (tissue_index in 1:length(tissue_vec)) {
     cat(tissue_index, "\n")
 }
 
-pdf(file = "../Output/qqplot.pdf", family = "Times", height = 8, width = 6)
+pdf(file = "./Output/qqplot.pdf", family = "Times", height = 8, width = 6)
 ggplot(data = bdat, mapping = aes(x = quants, y = beta)) +
     geom_point(size = 0.1, pch = ".") +
     facet_wrap(~tissue, scales = "free_y", ncol = 4) +

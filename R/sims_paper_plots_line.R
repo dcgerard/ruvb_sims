@@ -2,9 +2,9 @@ library(reshape2)
 library(ggplot2)
 library(dplyr)
 
-mse_mat <- read.csv("../Output/sims_out/mse_mat2.csv")
-auc_mat <- read.csv("../Output/sims_out/auc_mat2.csv")
-cov_mat <- read.csv("../Output/sims_out/cov_mat2.csv")
+mse_mat <- read.csv("./Output/sims_out/mse_mat2.csv")
+auc_mat <- read.csv("./Output/sims_out/auc_mat2.csv")
+cov_mat <- read.csv("./Output/sims_out/cov_mat2.csv")
 
 good_names <- c("OLS", "RUV2", "RUV3", "RUV4", "RUV4c", "CATE",
                 "CATEc", "RUVB")
@@ -36,7 +36,7 @@ pl <- ggplot(final_cov, mapping = aes(x = Nsamp, y = Median, color = Method, lty
     xlab("Sample Size") +
     theme(strip.background = element_rect(fill="white")) +
     guides(color = guide_legend(keywidth = 4))
-pdf(file = "../Output/figures/coverage_lines_5.pdf", family = "Times", height = 3.2, width = 6.5)
+pdf(file = "./Output/figures/coverage_lines_5.pdf", family = "Times", height = 3.2, width = 6.5)
 print(pl)
 dev.off()
 
@@ -52,7 +52,7 @@ pl <- ggplot(longcov, mapping = aes(x = Nsamp, y = Mean, color = Method, lty = M
     theme(strip.background = element_rect(fill="white")) +
     geom_errorbar(mapping = aes(ymax = Upper, ymin = Lower)) +
     guides(color = guide_legend(keywidth = 4))
-pdf(file = "../Output/figures/coverage_lines.pdf", family = "Times", height = 7.5, width = 6.5)
+pdf(file = "./Output/figures/coverage_lines.pdf", family = "Times", height = 7.5, width = 6.5)
 print(pl)
 dev.off()
 
@@ -79,7 +79,7 @@ pl <- ggplot(final_diff, mapping = aes(x = Nsamp, y = Mean, color = Method, lty 
     xlab("Sample Size") +
     theme(strip.background = element_rect(fill="white")) +
     guides(color = guide_legend(keywidth = 4))
-pdf(file = "../Output/figures/diff_lines_5.pdf", family = "Times", height = 3.2, width = 6.5)
+pdf(file = "./Output/figures/diff_lines_5.pdf", family = "Times", height = 3.2, width = 6.5)
 print(pl)
 dev.off()
 
@@ -95,6 +95,6 @@ pl <- ggplot(final_diff, mapping = aes(x = Nsamp, y = Mean, color = Method, lty 
     theme(strip.background = element_rect(fill="white")) +
     geom_errorbar(mapping = aes(ymin = Lower, ymax = Upper)) +
     guides(color = guide_legend(keywidth = 4))
-pdf(file = "../Output/figures/diff_lines.pdf", family = "Times", height = 7.5, width = 6.5)
+pdf(file = "./Output/figures/diff_lines.pdf", family = "Times", height = 7.5, width = 6.5)
 print(pl)
 dev.off()
