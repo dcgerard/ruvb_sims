@@ -1,6 +1,5 @@
 Reproducing Results of Gerard and Stephens (2016)
 ================
-David Gerard
 
 Introduction
 ============
@@ -85,7 +84,7 @@ Place the following files in the Data folder:
 3.  [gencode.v19.genes.V6p\_model.patched\_contigs.gtf](http://www.gtexportal.org/home/datasets#filesetFilesDiv14)
 4.  [GTEx\_Data\_V6\_Annotations\_SubjectPhenotypesDS.txt](http://www.gtexportal.org/home/datasets#datasetDiv2)
 5.  [HK\_genes.txt](http://www.tau.ac.il/~elieis/HKG/HK_genes.txt)
-6.  [gene2ensembl.gz](ftp://ftp.ncbi.nih.gov/gene/DATA/)
+6.  gene2ensembl.gz at <ftp://ftp.ncbi.nih.gov/gene/DATA/>
 
 Run Make
 --------
