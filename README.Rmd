@@ -37,7 +37,8 @@ Place the following files in the Data folder:
 
 ## Run Make
 
-Then simply run `make` from the terminal.
+To reproduce all of the results in @gerard2016unifying, simply run
+`make` from the terminal.
 
 If you want to reproduce just the results from Section 6.1, run
 ``` bash
