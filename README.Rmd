@@ -7,9 +7,35 @@ output:
     keep_md: yes
 ---
 
+# Introduction
+
+This repository contains code to reproduce the empirical evaluations
+of @gerard2016unifying. The new methods can be found in the
+[vicar](https://github.com/dcgerard/vicar) package.
+
+```{r, echo = FALSE, results = "hide"}
+liblist <- list("dplyr", "stringr", "ggplot2", "reshape2", "pROC",
+                "ruv", "cate", "gridExtra", "snow", "devtools", "sva",
+                "limma", "vicar")
+lapply(liblist, require, character.only = TRUE)
+```
+
+If you are having trouble reproducing these results, it might be that you need to update some of your R packages. These are the versions that I used:
+
+```{r}
+sessionInfo()
+```
+
+As you can see above, I've also only tried this out on Ubuntu.
+
+If you find a bug, please create an
+[issue](https://github.com/dcgerard/ruvb_sims/issues).
+
 # Instructions
 
-To reproduce the results of @gerard2016unifying, you need to (1) install the appropriate R packages, (2) obtain the appropriate data, (3) run `make` and (4) get some coffee while you wait.
+To reproduce the results of @gerard2016unifying, you need to (1)
+install the appropriate R packages, (2) obtain the appropriate data,
+(3) run `make` and (4) get some coffee while you wait.
 
 ## Install R Packages
 
