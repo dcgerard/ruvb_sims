@@ -1,10 +1,8 @@
 ---
 author: "David Gerard"
 title: "Reproducing Results of Gerard and Stephens (2016)"
-bibliography: "readme_bib.bib"
-output:
-  html_document:
-    keep_md: yes
+bibliography: readme_bib.bib
+output: github_document
 ---
 
 # Introduction
