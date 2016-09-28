@@ -6,6 +6,81 @@ Introduction
 
 This repository contains code to reproduce the empirical evaluations of Gerard and Stephens (2016). The new methods can be found in the [vicar](https://github.com/dcgerard/vicar) package.
 
+    ## Loading required package: dplyr
+
+    ## 
+    ## Attaching package: 'dplyr'
+
+    ## The following objects are masked from 'package:stats':
+    ## 
+    ##     filter, lag
+
+    ## The following objects are masked from 'package:base':
+    ## 
+    ##     intersect, setdiff, setequal, union
+
+    ## Loading required package: stringr
+
+    ## Loading required package: ggplot2
+
+    ## Loading required package: reshape2
+
+    ## Loading required package: pROC
+
+    ## Type 'citation("pROC")' for a citation.
+
+    ## 
+    ## Attaching package: 'pROC'
+
+    ## The following objects are masked from 'package:stats':
+    ## 
+    ##     cov, smooth, var
+
+    ## Loading required package: ruv
+
+    ## Loading required package: cate
+
+    ## Loading required package: gridExtra
+
+    ## 
+    ## Attaching package: 'gridExtra'
+
+    ## The following object is masked from 'package:dplyr':
+    ## 
+    ##     combine
+
+    ## Loading required package: snow
+
+    ## Loading required package: devtools
+
+    ## Loading required package: sva
+
+    ## Loading required package: mgcv
+
+    ## Loading required package: nlme
+
+    ## 
+    ## Attaching package: 'nlme'
+
+    ## The following object is masked from 'package:dplyr':
+    ## 
+    ##     collapse
+
+    ## This is mgcv 1.8-14. For overview type 'help("mgcv-package")'.
+
+    ## Loading required package: genefilter
+
+    ## 
+    ## Attaching package: 'genefilter'
+
+    ## The following object is masked from 'package:base':
+    ## 
+    ##     anyNA
+
+    ## Loading required package: limma
+
+    ## Loading required package: vicar
+
 If you are having trouble reproducing these results, it might be that you need to update some of your R packages. These are the versions that I used:
 
 ``` r
@@ -41,7 +116,7 @@ sessionInfo()
     ##  [7] XML_3.98-1.4         survival_2.39-5      withr_1.0.2         
     ## [10] DBI_0.5-1            BiocGenerics_0.16.1  plyr_1.8.4          
     ## [13] munsell_0.4.3        leapp_1.2            gtable_0.2.0        
-    ## [16] svd_0.4              memoise_1.0.0        evaluate_0.9        
+    ## [16] svd_0.4              evaluate_0.9         memoise_1.0.0       
     ## [19] Biobase_2.30.0       knitr_1.14           IRanges_2.4.6       
     ## [22] parallel_3.3.1       AnnotationDbi_1.32.3 esaBcv_1.2.1        
     ## [25] Rcpp_0.12.7          xtable_1.8-2         corpcor_1.6.8       
@@ -85,6 +160,8 @@ Place the following files in the Data folder:
 4.  [GTEx\_Data\_V6\_Annotations\_SubjectPhenotypesDS.txt](http://www.gtexportal.org/home/datasets#datasetDiv2)
 5.  [HK\_genes.txt](http://www.tau.ac.il/~elieis/HKG/HK_genes.txt)
 6.  gene2ensembl.gz at <ftp://ftp.ncbi.nih.gov/gene/DATA/>
+
+1 through 4 of the above are only available if you are a registered user of the GTEx Portal. I don't think I'm allowed to release these data.
 
 Run Make
 --------

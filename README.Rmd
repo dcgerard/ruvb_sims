@@ -58,6 +58,10 @@ Place the following files in the Data folder:
 5. [HK_genes.txt](http://www.tau.ac.il/~elieis/HKG/HK_genes.txt)
 6. gene2ensembl.gz at ftp://ftp.ncbi.nih.gov/gene/DATA/
 
+1 through 4 of the above are only available if you are a registered
+user of the GTEx Portal. I don't think I'm allowed to release these
+data.
+
 ## Run Make
 
 To reproduce all of the results in @gerard2016unifying, simply run

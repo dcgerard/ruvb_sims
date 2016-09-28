@@ -28,6 +28,80 @@ body {
 <h1 id="reproducing-results-of-gerard-and-stephens-2016">Reproducing Results of Gerard and Stephens (2016)</h1>
 <h1 id="introduction">Introduction</h1>
 <p>This repository contains code to reproduce the empirical evaluations of Gerard and Stephens (2016). The new methods can be found in the <a href="https://github.com/dcgerard/vicar">vicar</a> package.</p>
+<pre><code>## Loading required package: dplyr
+
+## 
+## Attaching package: 'dplyr'
+
+## The following objects are masked from 'package:stats':
+## 
+##     filter, lag
+
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+
+## Loading required package: stringr
+
+## Loading required package: ggplot2
+
+## Loading required package: reshape2
+
+## Loading required package: pROC
+
+## Type 'citation(&quot;pROC&quot;)' for a citation.
+
+## 
+## Attaching package: 'pROC'
+
+## The following objects are masked from 'package:stats':
+## 
+##     cov, smooth, var
+
+## Loading required package: ruv
+
+## Loading required package: cate
+
+## Loading required package: gridExtra
+
+## 
+## Attaching package: 'gridExtra'
+
+## The following object is masked from 'package:dplyr':
+## 
+##     combine
+
+## Loading required package: snow
+
+## Loading required package: devtools
+
+## Loading required package: sva
+
+## Loading required package: mgcv
+
+## Loading required package: nlme
+
+## 
+## Attaching package: 'nlme'
+
+## The following object is masked from 'package:dplyr':
+## 
+##     collapse
+
+## This is mgcv 1.8-14. For overview type 'help(&quot;mgcv-package&quot;)'.
+
+## Loading required package: genefilter
+
+## 
+## Attaching package: 'genefilter'
+
+## The following object is masked from 'package:base':
+## 
+##     anyNA
+
+## Loading required package: limma
+
+## Loading required package: vicar</code></pre>
 <p>If you are having trouble reproducing these results, it might be that you need to update some of your R packages. These are the versions that I used:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sessionInfo</span>()</code></pre></div>
 <pre><code>## R version 3.3.1 (2016-06-21)
@@ -59,7 +133,7 @@ body {
 ##  [7] XML_3.98-1.4         survival_2.39-5      withr_1.0.2         
 ## [10] DBI_0.5-1            BiocGenerics_0.16.1  plyr_1.8.4          
 ## [13] munsell_0.4.3        leapp_1.2            gtable_0.2.0        
-## [16] svd_0.4              memoise_1.0.0        evaluate_0.9        
+## [16] svd_0.4              evaluate_0.9         memoise_1.0.0       
 ## [19] Biobase_2.30.0       knitr_1.14           IRanges_2.4.6       
 ## [22] parallel_3.3.1       AnnotationDbi_1.32.3 esaBcv_1.2.1        
 ## [25] Rcpp_0.12.7          xtable_1.8-2         corpcor_1.6.8       
@@ -90,6 +164,7 @@ devtools::<span class="kw">install_github</span>(<span class="st">&quot;dcgerard
 <li><a href="http://www.tau.ac.il/~elieis/HKG/HK_genes.txt">HK_genes.txt</a></li>
 <li>gene2ensembl.gz at <a href="ftp://ftp.ncbi.nih.gov/gene/DATA/" class="uri">ftp://ftp.ncbi.nih.gov/gene/DATA/</a></li>
 </ol>
+<p>1 through 4 of the above are only available if you are a registered user of the GTEx Portal. I don't think I'm allowed to release these data.</p>
 <h2 id="run-make">Run Make</h2>
 <p>To reproduce all of the results in Gerard and Stephens (2016), simply run <code>make</code> from the terminal.</p>
 <p>If you want to reproduce just the results from Section 6.1, run</p>
