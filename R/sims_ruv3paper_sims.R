@@ -120,11 +120,14 @@ args_val$skip_gene    <- 0
 ## one_rep(par_list[[3]], args_val)
 
 ## ## If on your own computer, use this
-library(parallel)
+library(Rmpi)
 library(snow)
+library(parallel)
 cl <- makeCluster(detectCores() - 2)
 sout <- t(snow::parSapply(cl = cl, par_list, FUN = one_rep, current_params = args_val))
 stopCluster(cl)
+
+
 
 
 save(sout, file = "./Output/sims_out/general_sims2.Rd")
