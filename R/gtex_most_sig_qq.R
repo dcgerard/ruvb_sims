@@ -43,7 +43,7 @@ for (tissue_index in 1:length(tissue_vec)) {
     cat(tissue_index, "\n")
 }
 
-pdf(file = "./Output/qqplot.pdf", family = "Times", height = 8, width = 6)
+pdf(file = "./Output/figures/qqplot.pdf", family = "Times", height = 8, width = 6)
 ggplot(data = bdat, mapping = aes(x = quants, y = beta)) +
     geom_point(size = 0.1, pch = ".") +
     facet_wrap(~tissue, scales = "free_y", ncol = 4) +
