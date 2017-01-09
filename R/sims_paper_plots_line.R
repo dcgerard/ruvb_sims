@@ -56,6 +56,27 @@ pdf(file = "./Output/figures/coverage_lines.pdf", family = "Times", height = 7.5
 print(pl)
 dev.off()
 
+## How often coverage is really bad -----------------------------------------
+thresh <- 0.6
+longdat$lessthresh <- longdat$value <= thresh * 1
+longbad <- aggregate(lessthresh ~ variable + ncontrols + Nsamp + nullpi,
+                     data = longdat, FUN = mean)
+names(longbad)[1] <- "Method"
+finalbad <- dplyr::filter(longbad, nullpi == 0.5)
+
+pl <- ggplot(data = finalbad, mapping = aes(x = Nsamp, y = lessthresh, color = Method)) +
+  geom_point(size = 0.7) +
+  geom_line() +
+  facet_grid(.~ncontrols) +
+  ylab("Proportion of Times Below Threshold") +
+  xlab("Sample Size") +
+  theme_bw() +
+  theme(strip.background = element_rect(fill="white")) +
+  guides(color = guide_legend(keywidth = 4))
+pdf(file = paste0("./Output/figures/prop_bad05_", thresh * 100, ".pdf"), family = "Times", height = 3.2, width = 6.5)
+print(pl)
+dev.off()
+
 ## AUC ------------------------------------------------------------
 diff_mat <- cbind(auc_mat[, 1:5], auc_mat[, -c(1:5)] - auc_mat$RUVB)
 diff_mat$Nsamp <- diff_mat$Nsamp * 2

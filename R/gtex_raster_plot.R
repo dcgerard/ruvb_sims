@@ -80,7 +80,7 @@ for(tissue_index in 1:length(tissue_vec)) {
                   RUV4c = ruv4cout$p.rsvar.ebayes[!dat$ctl],
                   CATE = c(cateout$beta.p.value)[!dat$ctl],
                   CATEc = c(catecout$pvalues)[!dat$ctl],
-                  RUVB = c(ruvbout$lfsr2))
+                  RUVB = c(ruvbout$lfsr2)[!dat$ctl])
 
     if (any(colSums(pdat == 0) > 100)) {
         cat("LOOK HERE:", tissue_index, "\n")

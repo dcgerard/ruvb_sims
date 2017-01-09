@@ -12,7 +12,7 @@ If you are having trouble reproducing these results, it might be that you need t
 sessionInfo()
 ```
 
-    ## R version 3.3.1 (2016-06-21)
+    ## R version 3.3.2 (2016-10-31)
     ## Platform: x86_64-pc-linux-gnu (64-bit)
     ## Running under: Ubuntu 14.04.5 LTS
     ## 
@@ -28,29 +28,29 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ##  [1] vicar_0.1.4       limma_3.26.3      sva_3.18.0       
-    ##  [4] genefilter_1.52.0 mgcv_1.8-14       nlme_3.1-128     
-    ##  [7] devtools_1.12.0   snow_0.4-1        gridExtra_2.2.1  
+    ##  [1] vicar_0.1.6       limma_3.26.9      sva_3.18.0       
+    ##  [4] genefilter_1.52.1 mgcv_1.8-16       nlme_3.1-128     
+    ##  [7] devtools_1.12.0   snow_0.4-2        gridExtra_2.2.1  
     ## [10] cate_1.0.4        ruv_0.9.6         pROC_1.8         
-    ## [13] reshape2_1.4.1    ggplot2_2.1.0     stringr_1.1.0    
+    ## [13] reshape2_1.4.2    ggplot2_2.2.0     stringr_1.1.0    
     ## [16] dplyr_0.5.0      
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] splines_3.3.1        lattice_0.20-34      colorspace_1.2-6    
-    ##  [4] htmltools_0.3.5      stats4_3.3.1         yaml_2.1.13         
-    ##  [7] XML_3.98-1.4         survival_2.39-5      withr_1.0.2         
-    ## [10] DBI_0.5-1            BiocGenerics_0.16.1  plyr_1.8.4          
-    ## [13] munsell_0.4.3        leapp_1.2            gtable_0.2.0        
-    ## [16] svd_0.4              evaluate_0.9         memoise_1.0.0       
-    ## [19] Biobase_2.30.0       knitr_1.14           IRanges_2.4.6       
-    ## [22] parallel_3.3.1       AnnotationDbi_1.32.3 esaBcv_1.2.1        
-    ## [25] Rcpp_0.12.7          xtable_1.8-2         corpcor_1.6.8       
-    ## [28] scales_0.4.0         formatR_1.4          S4Vectors_0.8.6     
-    ## [31] annotate_1.48.0      digest_0.6.10        stringi_1.1.1       
-    ## [34] grid_3.3.1           tools_3.3.1          magrittr_1.5        
-    ## [37] tibble_1.2           RSQLite_1.0.0        MASS_7.3-45         
-    ## [40] Matrix_1.2-7.1       assertthat_0.1       rmarkdown_1.0       
-    ## [43] R6_2.1.3             compiler_3.3.1
+    ##  [1] Rcpp_0.12.8          plyr_1.8.4           tools_3.3.2         
+    ##  [4] digest_0.6.10        memoise_1.0.0        RSQLite_1.0.0       
+    ##  [7] annotate_1.48.0      evaluate_0.10        tibble_1.2          
+    ## [10] gtable_0.2.0         lattice_0.20-34      Matrix_1.2-7.1      
+    ## [13] DBI_0.5-1            yaml_2.1.14          parallel_3.3.2      
+    ## [16] withr_1.0.2          knitr_1.15           IRanges_2.4.8       
+    ## [19] S4Vectors_0.8.11     stats4_3.3.2         grid_3.3.2          
+    ## [22] Biobase_2.30.0       R6_2.2.0             AnnotationDbi_1.32.3
+    ## [25] survival_2.40-1      XML_3.98-1.5         rmarkdown_1.1       
+    ## [28] leapp_1.2            corpcor_1.6.8        magrittr_1.5        
+    ## [31] splines_3.3.2        scales_0.4.1         htmltools_0.3.5     
+    ## [34] MASS_7.3-45          BiocGenerics_0.16.1  svd_0.4             
+    ## [37] assertthat_0.1       xtable_1.8-2         colorspace_1.3-0    
+    ## [40] esaBcv_1.2.1         stringi_1.1.2        lazyeval_0.2.0      
+    ## [43] munsell_0.4.3
 
 As you can see above, I've also only tried this out on Ubuntu.
 
