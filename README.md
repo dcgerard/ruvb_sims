@@ -14,7 +14,7 @@ sessionInfo()
 
     ## R version 3.3.2 (2016-10-31)
     ## Platform: x86_64-pc-linux-gnu (64-bit)
-    ## Running under: Ubuntu 14.04.5 LTS
+    ## Running under: Ubuntu 16.04.2 LTS
     ## 
     ## locale:
     ##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
@@ -28,29 +28,29 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ##  [1] vicar_0.1.6       limma_3.26.9      sva_3.18.0       
-    ##  [4] genefilter_1.52.1 mgcv_1.8-16       nlme_3.1-128     
-    ##  [7] devtools_1.12.0   snow_0.4-2        gridExtra_2.2.1  
-    ## [10] cate_1.0.4        ruv_0.9.6         pROC_1.8         
-    ## [13] reshape2_1.4.2    ggplot2_2.2.0     stringr_1.1.0    
-    ## [16] dplyr_0.5.0      
+    ##  [1] assertthat_0.2.0  seqgendiff_0.1.0  vicar_0.1.6      
+    ##  [4] limma_3.26.9      sva_3.18.0        genefilter_1.52.1
+    ##  [7] mgcv_1.8-17       nlme_3.1-131      devtools_1.12.0  
+    ## [10] snow_0.4-2        gridExtra_2.2.1   cate_1.0.4       
+    ## [13] ruv_0.9.6         pROC_1.9.1        reshape2_1.4.2   
+    ## [16] ggplot2_2.2.1     stringr_1.2.0     dplyr_0.5.0      
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] Rcpp_0.12.8          plyr_1.8.4           tools_3.3.2         
-    ##  [4] digest_0.6.10        memoise_1.0.0        RSQLite_1.0.0       
-    ##  [7] annotate_1.48.0      evaluate_0.10        tibble_1.2          
-    ## [10] gtable_0.2.0         lattice_0.20-34      Matrix_1.2-7.1      
-    ## [13] DBI_0.5-1            yaml_2.1.14          parallel_3.3.2      
-    ## [16] withr_1.0.2          knitr_1.15           IRanges_2.4.8       
-    ## [19] S4Vectors_0.8.11     stats4_3.3.2         grid_3.3.2          
-    ## [22] Biobase_2.30.0       R6_2.2.0             AnnotationDbi_1.32.3
-    ## [25] survival_2.40-1      XML_3.98-1.5         rmarkdown_1.1       
-    ## [28] leapp_1.2            corpcor_1.6.8        magrittr_1.5        
-    ## [31] splines_3.3.2        scales_0.4.1         htmltools_0.3.5     
-    ## [34] MASS_7.3-45          BiocGenerics_0.16.1  svd_0.4             
-    ## [37] assertthat_0.1       xtable_1.8-2         colorspace_1.3-0    
-    ## [40] esaBcv_1.2.1         stringi_1.1.2        lazyeval_0.2.0      
-    ## [43] munsell_0.4.3
+    ##  [1] splines_3.3.2        lattice_0.20-34      colorspace_1.3-2    
+    ##  [4] htmltools_0.3.5      stats4_3.3.2         yaml_2.1.14         
+    ##  [7] XML_3.98-1.5         survival_2.41-2      withr_1.0.2         
+    ## [10] DBI_0.6              BiocGenerics_0.16.1  plyr_1.8.4          
+    ## [13] munsell_0.4.3        leapp_1.2            gtable_0.2.0        
+    ## [16] svd_0.4              evaluate_0.10        memoise_1.0.0       
+    ## [19] Biobase_2.30.0       knitr_1.15.1         IRanges_2.4.8       
+    ## [22] parallel_3.3.2       AnnotationDbi_1.32.3 esaBcv_1.2.1        
+    ## [25] Rcpp_0.12.10         xtable_1.8-2         corpcor_1.6.8       
+    ## [28] scales_0.4.1         backports_1.0.5      S4Vectors_0.8.11    
+    ## [31] annotate_1.48.0      digest_0.6.12        stringi_1.1.2       
+    ## [34] grid_3.3.2           rprojroot_1.2        tools_3.3.2         
+    ## [37] magrittr_1.5         lazyeval_0.2.0       tibble_1.2          
+    ## [40] RSQLite_1.1-2        MASS_7.3-45          Matrix_1.2-8        
+    ## [43] rmarkdown_1.3        R6_2.2.0
 
 As you can see above, I've also only tried this out on Ubuntu.
 
@@ -68,10 +68,11 @@ To install the needed R packages, run the following in R
 
 ``` r
 install.packages(c("dplyr", "stringr", "ggplot2", "reshape2", "pROC",
-                   "ruv", "cate", "gridExtra", "snow", "devtools"))
+                   "ruv", "cate", "gridExtra", "snow", "devtools", "assertthat"))
 source("https://bioconductor.org/biocLite.R")
 biocLite(c("sva", "limma"))
 devtools::install_github("dcgerard/vicar")
+devtools::install_github("dcgerard/seqgendiff")
 ```
 
 Get Data

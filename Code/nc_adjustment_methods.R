@@ -1,6 +1,54 @@
 # I always assume that the variable of interest is the second one.
 
-## Five methods to look at ---------------------------------------------------
+## First, re-define cate::fa.pc because it doesn't work when r = 1.
+library(cate)
+cate_fa <- function (Y, r)
+{
+  assertthat::assert_that(is.matrix(Y))
+  assertthat::are_equal(length(r), 1)
+  assertthat::assert_that(r >= 0 & r < min(dim(Y)))
+  if (r == 0) {
+    Gamma <- NULL
+    Z <- NULL
+    Sigma <- apply(Y, 2, function(x) mean(x^2))
+  }
+  else {
+    svd_Y <- svd(Y)
+    Gamma <- svd_Y$v[, 1:r, drop = FALSE] %*% diag(svd_Y$d[1:r], r, r)/sqrt(nrow(Y))
+    Z <- sqrt(nrow(Y)) * svd_Y$u[, 1:r, drop = FALSE]
+    Sigma <- apply(Y - Z %*% t(Gamma), 2, function(x) sum(x^2))/(nrow(Y) - r)
+  }
+  return(list(Gamma = Gamma, Z = Z, Sigma = Sigma))
+}
+R.utils::reassignInPackage(name = "fa.pc", pkgName = "cate", value = cate_fa)
+
+
+## Basic OLS -----------------------------------------------------------------
+ols <- function(Y, X, quant = 0.95) {
+  limma_out <- limma::lmFit(object = t(Y), design = X)
+  betahat   <- limma_out$coefficients[, 2]
+  sebetahat <- limma_out$stdev.unscaled[, 2] * limma_out$sigma
+  df        <- limma_out$df.residual[1]
+  return(list(betahat = betahat, sebetahat = sebetahat, df = df))
+}
+
+## Specific version of RUVB I use -------------------------------------------
+ruvb_bfa_gs_linked <- function(Y, X, control_genes, num_sv) {
+  ruvbout <- vicar::ruvb(Y = Y, X = X, ctl = control_genes, k = num_sv,
+                         fa_func = vicar::bfa_gs_linked,
+                         fa_args = list(use_code = "r", nsamp = 10000),
+                         cov_of_interest = 2)
+
+  return(list(betahat = ruvbout$means,
+              pvalues = ruvbout$lfsr2,
+              lower = ruvbout$lower,
+              upper = ruvbout$upper))
+}
+
+
+
+
+## Methods to look at ---------------------------------------------------
 cate_simp_nc_correction <- function(Y, X, num_sv, control_genes) {
   cate_nc <- cate::cate.fit(Y = Y, X.primary = X[, 2, drop = FALSE],
                             X.nuis = X[, -2, drop = FALSE],
@@ -67,7 +115,7 @@ cate_limma <- function(Y, X, num_sv, control_genes) {
 }
 
 ruv3_limma_pre <- function(Y, X, num_sv, control_genes) {
-  vout <- vicar::ruv3(Y = Y, X = X, ctl = ctl, k = q, cov_of_interest = 2, likelihood = "normal",
+  vout <- vicar::ruv3(Y = Y, X = X, ctl = control_genes, k = num_sv, cov_of_interest = 2,
                       limmashrink = TRUE, include_intercept = FALSE, gls = TRUE)
   betahat   <- vout$betahat
   sebetahat <- vout$sebetahat_unadjusted
@@ -95,22 +143,55 @@ ruv3_limma_post <- function(Y, X, num_sv, control_genes) {
 ## Limma shrinking variances (after gls for ruv3 and ruv4)----------------------------------
 ## Apply or not apply to all "simp" functions
 
-limma_adjust <- function(sebetahat, df) {
-  lmout <- limma::squeezeVar(var = sebetahat ^ 2, df = df)
-  return(sebetahat = sqrt(lmout$var.post), df = df + lmout$df.prior)
+#' @param obj A list whose first element is betahat, whose second element is sebetahat and
+#'      whose third element is df.
+limma_adjust <- function(obj) {
+  betahat   <- obj[[1]]
+  sebetahat <- obj[[2]]
+  df        <- obj[[3]]
+  lmout     <- limma::squeezeVar(var = sebetahat ^ 2, df = df)
+  return(list(betahat = betahat, sebetahat = sqrt(lmout$var.post), df = df + lmout$df.prior))
 }
 
 
 ## Adjustment of variances ------------------------------------
-ctl_adjust <- function(betahat, sebetahat, control_genes) {
-  mult_val <- mean(betahat[control_genes] ^ 2 / sebetahat[control_genes] ^ 2)
+#' @param obj A list whose first element is betahat, whose second element is sebetahat
+#'      and whose third element is df
+#' @param control_genes The control genes
+ctl_adjust <- function(obj, control_genes) {
+  betahat   <- obj[[1]]
+  sebetahat <- obj[[2]]
+  df        <- obj[[3]]
+  mult_val      <- mean(betahat[control_genes] ^ 2 / sebetahat[control_genes] ^ 2)
   sebetahat_adjusted <- sqrt(mult_val) * sebetahat
-  return(sebetahat_adjusted)
+  return(list(betahat = betahat, sebetahat = sebetahat_adjusted, df = df))
 }
 
-mad_adjust <- function(betahat, sebetahat) {
+#' @param obj A list whose first element is betahat and whose second element is sebetahat,
+#'     and whose third element is df
+mad_adjust <- function(obj) {
+  betahat   <- obj[[1]]
+  sebetahat <- obj[[2]]
+  df        <- obj[[3]]
   mult_val <- stats::mad(betahat ^ 2 / sebetahat ^ 2, center = 0)
   sebetahat_adjusted <- sqrt(mult_val) * sebetahat
-  return(sebetahat_adjusted)
+  return(list(betahat = betahat, sebetahat = sebetahat_adjusted, df = df))
+}
+
+## Calculate CI and p-values
+#' @param obj A list whose first element is betahat, whose second element is sebetahat,
+#'     and whose third element is df
+#' @param alpha We calculate 1 - alpha confidence intervals.
+calc_ci_p <- function(obj, alpha = 0.05) {
+  betahat   <- obj[[1]]
+  sebetahat <- obj[[2]]
+  df        <- obj[[3]]
+
+  tstats    <- betahat / sebetahat
+  pvalues   <- 2 * stats::pt(-abs(tstats), df = df)
+  tval  <- stats::qt(p = 1 - alpha / 2, df = df)
+  lower <- betahat - tval * sebetahat
+  upper <- betahat + tval * sebetahat
+  return(list(betahat = betahat, pvalues = pvalues, lower = lower, upper = upper))
 }
 

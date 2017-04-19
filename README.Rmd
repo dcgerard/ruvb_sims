@@ -10,10 +10,10 @@ This repository contains code to reproduce the empirical evaluations
 of @gerard2016unifying. The new methods can be found in the
 [vicar](https://github.com/dcgerard/vicar) package.
 
-```{r, echo = FALSE, results = "hide"}
+```{r, echo = FALSE, results = "hide", message=FALSE}
 liblist <- list("dplyr", "stringr", "ggplot2", "reshape2", "pROC",
                 "ruv", "cate", "gridExtra", "snow", "devtools", "sva",
-                "limma", "vicar")
+                "limma", "vicar", "seqgendiff", "assertthat")
 lapply(liblist, require, character.only = TRUE)
 ```
 
@@ -40,10 +40,11 @@ To install the needed R packages, run the following in R
 
 ``` r
 install.packages(c("dplyr", "stringr", "ggplot2", "reshape2", "pROC",
-                   "ruv", "cate", "gridExtra", "snow", "devtools"))
+                   "ruv", "cate", "gridExtra", "snow", "devtools", "assertthat"))
 source("https://bioconductor.org/biocLite.R")
 biocLite(c("sva", "limma"))
 devtools::install_github("dcgerard/vicar")
+devtools::install_github("dcgerard/seqgendiff")
 ```
 
 
