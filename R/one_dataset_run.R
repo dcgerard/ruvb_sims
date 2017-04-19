@@ -57,3 +57,39 @@ p3 <- ggplot(data = longdat, mapping = aes(x = value, color = I("black"), fill =
 
 gridExtra::grid.arrange(p1, p2, p3, ncol = 3, nrow = 1, padding = 0)
 dev.off()
+
+
+pdf(file = "./Output/figures/all_null_wide.pdf", height = 2, width = 10, family = "Times", colormodel = "cmyk")
+longdat <- melt(pmat[pmat$seed == seed_seq[1], ], id.vars = "seed")
+p1 <- ggplot(data = longdat, mapping = aes(x = value, color = I("black"), fill = I(fill_color))) +
+  geom_histogram(bins = 15) +
+  ylab("Counts") +
+  xlab("P-values") +
+  theme_bw() +
+  theme(strip.background = element_blank(),
+        strip.text.y = element_blank(), axis.title = element_text(size = 25),
+        axis.text = element_text(size = 15))
+
+longdat <- melt(pmat[pmat$seed == seed_seq[2], ], id.vars = "seed")
+p2 <- ggplot(data = longdat, mapping = aes(x = value, color = I("black"), fill = I(fill_color))) +
+  geom_histogram(bins = 15) +
+  ylab("") +
+  xlab("P-values") +
+  theme_bw() +
+  theme(strip.background = element_rect(fill = fill_color),
+        strip.text.y = element_text(size = 9), axis.title = element_text(size = 25),
+        axis.text = element_text(size = 15))
+
+longdat <- melt(pmat[pmat$seed == seed_seq[3], ], id.vars = "seed")
+p3 <- ggplot(data = longdat, mapping = aes(x = value, color = I("black"), fill = I(fill_color))) +
+  geom_histogram(bins = 15) +
+  ylab("") +
+  xlab("P-values") +
+  theme_bw() +
+  theme(strip.background = element_rect(fill = fill_color),
+        strip.text.y = element_text(size = 9), axis.title = element_text(size = 25),
+        axis.text = element_text(size = 15))
+
+gridExtra::grid.arrange(p1, p2, p3, ncol = 3, nrow = 1, padding = 0)
+dev.off()
+

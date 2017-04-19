@@ -120,7 +120,6 @@ args_val$skip_gene    <- 0
 ## one_rep(par_list[[3]], args_val)
 
 ## ## If on your own computer, use this
-library(Rmpi)
 library(snow)
 library(parallel)
 cl <- makeCluster(detectCores() - 2)

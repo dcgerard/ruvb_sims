@@ -1,25 +1,25 @@
 #' @param calibrate a logical for whether to use MAD calibrated t-stats.
 cate_nc <- function(Y, X, num_sv, control_genes, calibrate = FALSE, quant = 0.95) {
-    calibrate <- as.logical(calibrate)
-    cate_nc <- cate::cate.fit(Y = Y, X.primary = X[, 2, drop = FALSE],
-                              X.nuis = X[, -2, drop = FALSE],
-                              r = num_sv, adj.method = "nc",
-                              nc = as.logical(control_genes),
-                              calibrate = calibrate)
+  calibrate <- as.logical(calibrate)
+  cate_nc <- cate::cate.fit(Y = Y, X.primary = X[, 2, drop = FALSE],
+                            X.nuis = X[, -2, drop = FALSE],
+                            r = num_sv, adj.method = "nc",
+                            nc = as.logical(control_genes),
+                            calibrate = calibrate)
 
-    betahat   <- c(cate_nc$beta)
-    sebetahat <- c(sqrt(cate_nc$beta.cov.row * cate_nc$beta.cov.col) /
+  betahat   <- c(cate_nc$beta)
+  sebetahat <- c(sqrt(cate_nc$beta.cov.row * cate_nc$beta.cov.col) /
                    sqrt(nrow(X)))
-    df        <- Inf
-    pvalues   <- c(cate_nc$beta.p.value)
+  df        <- Inf
+  pvalues   <- c(cate_nc$beta.p.value)
 
-    alpha <- 1 - quant
-    tval  <- qt(p = 1 - alpha / 2, df = df)
-    lower <- betahat - tval * sebetahat
-    upper <- betahat + tval * sebetahat
+  alpha <- 1 - quant
+  tval  <- qt(p = 1 - alpha / 2, df = df)
+  lower <- betahat - tval * sebetahat
+  upper <- betahat + tval * sebetahat
 
-    return(list(betahat = betahat, sebetahat = sebetahat, df = df,
-                pvalues = pvalues, lower = lower, upper = upper))
+  return(list(betahat = betahat, sebetahat = sebetahat, df = df,
+              pvalues = pvalues, lower = lower, upper = upper))
 }
 
 #' @param calibrate a logical for whether to use MAD calibrated t-stats.
