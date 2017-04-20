@@ -85,14 +85,7 @@ cate_simp <- function(Y, X, num_sv, control_genes) {
   return(list(betahat = betahat, sebetahat = sebetahat, df = df))
 }
 
-ruv3_simp <- function(Y, X, num_sv, control_genes) {
-  vout <- vicar::ruv3(Y = Y, X = X, ctl = control_genes, k = num_sv, cov_of_interest = 2,
-                      limmashrink = FALSE, include_intercept = FALSE, gls = TRUE)
-  betahat   <- vout$betahat
-  sebetahat <- vout$sebetahat_unadjusted
-  df        <- nrow(Y) - ncol(X) - num_sv
-  return(list(betahat = betahat, sebetahat = sebetahat, df = df))
-}
+
 
 ruv2_simp <- function(Y, X, num_sv, control_genes) {
   vout <- ruv::RUV2(Y = Y, X = X[, 2, drop = FALSE],
@@ -103,13 +96,33 @@ ruv2_simp <- function(Y, X, num_sv, control_genes) {
   return(list(betahat = betahat, sebetahat = sebetahat, df = df))
 }
 
-## Limma before gls for RUV3 and RUV4 ----------------------------------------
+## Limma before gls for RUV4 ----------------------------------------
 cate_limma <- function(Y, X, num_sv, control_genes) {
   vout <- vicar::vruv4(Y = Y, X = X, ctl = control_genes, k = num_sv, cov_of_interest = 2,
                        likelihood = "normal", limmashrink = TRUE, gls = TRUE,
                        include_intercept = FALSE)
   betahat   <- vout$betahat
   sebetahat <- vout$sebetahat_ols
+  df        <- nrow(Y) - ncol(X) - num_sv
+  return(list(betahat = betahat, sebetahat = sebetahat, df = df))
+}
+
+## RUV3 needs special attention since return 0's for betahats in ctl--
+
+ruv3_simp <- function(Y, X, num_sv, control_genes) {
+  vout <- vicar::ruv3(Y = Y, X = X, ctl = control_genes, k = num_sv, cov_of_interest = 2,
+                      limmashrink = FALSE, include_intercept = FALSE, gls = TRUE)
+  betahat   <- vout$betahat
+  sebetahat <- vout$sebetahat_unadjusted
+  df        <- nrow(Y) - ncol(X) - num_sv
+  return(list(betahat = betahat, sebetahat = sebetahat, df = df))
+}
+
+ruv3_ctl_adjust <- function(Y, X, num_sv, control_genes) {
+  vout <- vicar::ruv3(Y = Y, X = X, ctl = control_genes, k = num_sv, cov_of_interest = 2,
+                      limmashrink = FALSE, include_intercept = FALSE, gls = TRUE)
+  betahat   <- vout$betahat
+  sebetahat <- vout$sebetahat_adjusted
   df        <- nrow(Y) - ncol(X) - num_sv
   return(list(betahat = betahat, sebetahat = sebetahat, df = df))
 }
@@ -123,6 +136,15 @@ ruv3_limma_pre <- function(Y, X, num_sv, control_genes) {
   return(list(betahat = betahat, sebetahat = sebetahat, df = df))
 }
 
+ruv3_limma_pre_adjust <- function(Y, X, num_sv, control_genes) {
+  vout <- vicar::ruv3(Y = Y, X = X, ctl = control_genes, k = num_sv, cov_of_interest = 2,
+                      limmashrink = TRUE, include_intercept = FALSE, gls = TRUE)
+  betahat   <- vout$betahat
+  sebetahat <- vout$sebetahat_adjusted
+  df        <- nrow(Y) - ncol(X) - num_sv
+  return(list(betahat = betahat, sebetahat = sebetahat, df = df))
+}
+
 ## Limma after gls for RUV3 --- since sebetahat is NA for control genes
 ruv3_limma_post <- function(Y, X, num_sv, control_genes) {
   vout <- vicar::ruv3(Y = Y, X = X, ctl = control_genes, k = num_sv, cov_of_interest = 2,
@@ -131,10 +153,24 @@ ruv3_limma_post <- function(Y, X, num_sv, control_genes) {
   lmout <- limma::squeezeVar(vout$simga2_unadjusted, df = nrow(Y) - ncol(X) - num_sv)
   betahat   <- vout$betahat
   sebetahat <- sqrt(vout$mult_matrix * lmout$var.post)
+  sebetahat[control_genes] <- NA
 
   # Check
   # sqrt(vout$mult_matrix * vout$simga2_unadjusted)
   # vout$sebetahat_unadjusted
+  df        <- lmout$df.prior + nrow(X) - ncol(X) - num_sv
+  return(list(betahat = betahat, sebetahat = sebetahat, df = df))
+}
+
+ruv3_limma_post_adjust <- function(Y, X, num_sv, control_genes) {
+  vout <- vicar::ruv3(Y = Y, X = X, ctl = control_genes, k = num_sv, cov_of_interest = 2,
+                      limmashrink = FALSE, include_intercept = FALSE, gls = TRUE)
+
+  lmout <- limma::squeezeVar(vout$simga2_unadjusted, df = nrow(Y) - ncol(X) - num_sv)
+  betahat   <- vout$betahat
+  multiplier <- mean(t(vout$resid_mat) ^ 2 / lmout$var.post[control_genes])
+  sebetahat <- sqrt(vout$mult_matrix * lmout$var.post * multiplier)
+  sebetahat[control_genes] <- NA
   df        <- lmout$df.prior + nrow(X) - ncol(X) - num_sv
   return(list(betahat = betahat, sebetahat = sebetahat, df = df))
 }
@@ -173,7 +209,7 @@ mad_adjust <- function(obj) {
   betahat   <- obj[[1]]
   sebetahat <- obj[[2]]
   df        <- obj[[3]]
-  mult_val <- stats::mad(betahat ^ 2 / sebetahat ^ 2, center = 0)
+  mult_val <- stats::mad(betahat ^ 2 / sebetahat ^ 2, center = 0, na.rm = TRUE)
   sebetahat_adjusted <- sqrt(mult_val) * sebetahat
   return(list(betahat = betahat, sebetahat = sebetahat_adjusted, df = df))
 }

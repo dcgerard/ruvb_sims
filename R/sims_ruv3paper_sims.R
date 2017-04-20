@@ -45,7 +45,7 @@ one_rep <- function(new_params, current_params) {
   method_list$ols_c  <- ctl_adjust(method_list$ols_o)
   method_list$ols_l  <- limma_adjust(method_list$ols_o)
   method_list$ols_lm <- mad_adjust(method_list$ols_l)
-  method_list$ols_cl <- ctl_adjust(method_list$ols_l)
+  method_list$ols_lc <- ctl_adjust(method_list$ols_l)
 
   ## RUV2 --------------------------------------------------------------------
   method_list$ruv2_o  <- ruv2_simp(Y = Y, X = X, num_sv = num_sv,
@@ -54,22 +54,24 @@ one_rep <- function(new_params, current_params) {
   method_list$ruv2_c  <- ctl_adjust(method_list$ruv2_o)
   method_list$ruv2_l  <- limma_adjust(method_list$ruv2_o)
   method_list$ruv2_lm <- mad_adjust(method_list$ruv2_l)
-  method_list$ruv2_cl <- ctl_adjust(method_list$ruv2_l)
+  method_list$ruv2_lc <- ctl_adjust(method_list$ruv2_l)
 
   ## RUV3 --------------------------------------------------------------------
   method_list$ruv3_o  <- ruv3_simp(Y = Y, X = X, num_sv = num_sv,
                                    control_genes = control_genes)
   method_list$ruv3_m  <- mad_adjust(method_list$ruv3_o)
-  method_list$ruv3_c  <- ctl_adjust(method_list$ruv3_o)
+  method_list$ruv3_c  <- ruv3_ctl_adjust(Y = Y, X = X, num_sv = num_sv,
+                                         control_genes = control_genes)
   method_list$ruv3_lb <- ruv3_limma_pre(Y = Y, X = X, num_sv = num_sv,
                                         control_genes = control_genes)
   method_list$ruv3_lbm <- mad_adjust(method_list$ruv3_lb)
-  method_list$ruv3_lbc <- ctl_adjust(method_list$ruv3_lb)
+  method_list$ruv3_lbc <- ruv3_limma_pre_adjust(Y = Y, X = X, num_sv = num_sv,
+                                                control_genes = control_genes)
   method_list$ruv3_la  <- ruv3_limma_post(Y = Y, X = X, num_sv = num_sv,
                                           control_genes = control_genes)
   method_list$ruv3_lam <- mad_adjust(method_list$ruv3_la)
-  method_list$ruv3_lac <- ctl_adjust(method_list$ruv3_la)
-
+  method_list$ruv3_lac <- ruv3_limma_post_adjust(Y = Y, X = X, num_sv = num_sv,
+                                                 control_genes = control_genes)
 
   ## RUV4 (not CATE) ---------------------------------------------------------
   method_list$ruv4_o  <- ruv4_simp(Y = Y, X = X, num_sv = num_sv,
@@ -110,46 +112,32 @@ one_rep <- function(new_params, current_params) {
 
   ## Get summary quantities --------------------------------------------------
   get_mse <- function(args, beta_true, control_genes) {
-    if (length(args$betahat) == length(control_genes)) {
-      mean((args$betahat[!control_genes] - beta_true[!control_genes]) ^ 2)
-    } else {
-      mean((args$betahat - beta_true[!control_genes]) ^ 2)
-    }
+    mean((args$betahat[!control_genes] - beta_true[!control_genes]) ^ 2)
   }
 
   get_auc <- function(args, which_null, control_genes) {
     if (sum(which_null) == length(which_null)) {
       return(NA)
     }
-    if (length(args$pvalues) == length(control_genes)) {
-      pROC::roc(predictor = args$pvalues[!control_genes],
-                response = which_null[!control_genes])$auc
-    } else {
-      pROC::roc(predictor = c(args$pvalues), response = which_null[!control_genes])$auc
-    }
+    pROC::roc(predictor = args$pvalues[!control_genes],
+              response = which_null[!control_genes])$auc
   }
 
   get_coverage <- function(args, beta_true, control_genes) {
-    if(length(args$lower) == length(control_genes)) {
-      mean(args$lower[!control_genes] < beta_true[!control_genes] &
-             args$upper[!control_genes] > beta_true[!control_genes])
-    } else {
-      mean(args$lower < beta_true[!control_genes] &
-             args$upper > beta_true[!control_genes])
-    }
+    mean(args$lower[!control_genes] < beta_true[!control_genes] &
+           args$upper[!control_genes] > beta_true[!control_genes])
   }
 
-  mse_vec <- sapply(method_list, get_mse, beta_true = beta_true,
+  mse_vec <- sapply(pci_list, get_mse, beta_true = beta_true,
                     control_genes = control_genes)
-  auc_vec <- sapply(method_list, get_auc, which_null = which_null,
+  auc_vec <- sapply(pci_list, get_auc, which_null = which_null,
                     control_genes = control_genes)
-  cov_vec <- sapply(method_list, get_coverage, beta_true = beta_true,
+  cov_vec <- sapply(pci_list, get_coverage, beta_true = beta_true,
                     control_genes = control_genes)
 
   return_vec <- c(mse_vec, auc_vec, cov_vec)
   xtot.time <- proc.time() - start.time
   return(return_vec)
-
 }
 
 itermax <- 500
@@ -157,7 +145,7 @@ seed_start <- 2222
 
 ## these change
 nullpi_seq   <- c(0.5, 0.9, 1)
-Nsamp_seq    <- c(6, 10, 5, 40)
+Nsamp_seq    <- c(6, 10, 20, 40)
 ncontrol_seq <- c(10, 100)
 
 par_vals <- expand.grid(list((1 + seed_start):(itermax + seed_start),
@@ -188,7 +176,7 @@ mat <- t(as.matrix(read.csv("./Output/gtex_tissue_gene_reads_v6p/muscle.csv",
 args_val$mat <- mat[, order(apply(mat, 2, median), decreasing = TRUE)[1:args_val$Ngene]]
 rm(mat)
 
-## one_rep(par_list[[3]], args_val)
+## oout <- one_rep(par_list[[3]], args_val)
 
 ## ## If on your own computer, use this
 library(snow)
@@ -197,13 +185,10 @@ cl <- makeCluster(detectCores() - 2)
 sout <- t(snow::parSapply(cl = cl, par_list, FUN = one_rep, current_params = args_val))
 stopCluster(cl)
 
-
-
-
 save(sout, file = "./Output/sims_out/general_sims2.Rd")
-mse_mat <- cbind(par_vals, sout[, 1:8])
-auc_mat <- cbind(par_vals, sout[, 9:16])
-cov_mat <- cbind(par_vals, sout[, 17:24])
+mse_mat <- cbind(par_vals, sout[, 1:(ncol(sout) / 3)])
+auc_mat <- cbind(par_vals, sout[, (ncol(sout) / 3 + 1):(2 * ncol(sout) / 3)])
+cov_mat <- cbind(par_vals, sout[, (2 * ncol(sout) / 3 + 1):ncol(sout)])
 write.csv(mse_mat, file = "./Output/sims_out/mse_mat2.csv", row.names = FALSE)
 write.csv(auc_mat, file = "./Output/sims_out/auc_mat2.csv", row.names = FALSE)
 write.csv(cov_mat, file = "./Output/sims_out/cov_mat2.csv", row.names = FALSE)
