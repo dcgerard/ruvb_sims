@@ -102,13 +102,22 @@ one_rep <- function(new_params, current_params) {
   method_list$cate_dlm <- mad_adjust(method_list$cate_dl)
   method_list$cate_dlc <- ctl_adjust(method_list$cate_dl)
 
+  ## t-approximation version of RUVB -------------------------------------
+  method_list$ruvbn    <- ruvb_bfa_gs_linked_se(Y = Y, X = X, num_sv = num_sv,
+                                                control_genes = control_genes)
+  method_list$ruvbnl   <- limma_adjust(method_list$ruvbn)
+
 
   ## Get CI's and p-values ----------------------------------------------------
   pci_list <- lapply(X = method_list, FUN = calc_ci_p)
 
+  ## sample version of RUVB ---------------------------------------------------
+  pci_list$ruvb <- list(betahat = method_list$ruvbn$betahat, pvalues = pci_list$ruvbn$pvalues,
+                        lower = method_list$ruvbn$lower, upper = method_list$ruvbn$upper)
+
   ## Fit RUVB ----------------------------------------------------------------
-  pci_list$ruvb <- ruvb_bfa_gs_linked(Y = Y, X = X, num_sv = num_sv,
-                                      control_genes = control_genes)
+  # pci_list$ruvb <- ruvb_bfa_gs_linked(Y = Y, X = X, num_sv = num_sv,
+  #                                     control_genes = control_genes)
 
   ## Get summary quantities --------------------------------------------------
   get_mse <- function(args, beta_true, control_genes) {
@@ -135,12 +144,15 @@ one_rep <- function(new_params, current_params) {
   cov_vec <- sapply(pci_list, get_coverage, beta_true = beta_true,
                     control_genes = control_genes)
 
+  cov_vec
+  auc_vec
+
   return_vec <- c(mse_vec, auc_vec, cov_vec)
   xtot.time <- proc.time() - start.time
   return(return_vec)
 }
 
-itermax <- 500
+itermax <- 500 ## itermax should be 500
 seed_start <- 2222
 
 ## these change
@@ -176,7 +188,8 @@ mat <- t(as.matrix(read.csv("./Output/gtex_tissue_gene_reads_v6p/muscle.csv",
 args_val$mat <- mat[, order(apply(mat, 2, median), decreasing = TRUE)[1:args_val$Ngene]]
 rm(mat)
 
-## oout <- one_rep(par_list[[3]], args_val)
+# oout <- one_rep(par_list[[1]], args_val)
+# oout
 
 ## ## If on your own computer, use this
 library(snow)

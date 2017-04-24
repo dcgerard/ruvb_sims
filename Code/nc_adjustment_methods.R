@@ -36,11 +36,26 @@ ols <- function(Y, X, quant = 0.95) {
 ruvb_bfa_gs_linked <- function(Y, X, control_genes, num_sv) {
   ruvbout <- vicar::ruvb(Y = Y, X = X, ctl = control_genes, k = num_sv,
                          fa_func = vicar::bfa_gs_linked,
-                         fa_args = list(use_code = "r", nsamp = 10000),
+                         fa_args = list(use_code = "r", nsamp = 10000), ## nsamp should be 10000
                          cov_of_interest = 2)
 
   return(list(betahat = ruvbout$means,
               pvalues = ruvbout$lfsr2,
+              lower = ruvbout$lower,
+              upper = ruvbout$upper))
+}
+
+
+## Return betahat, sebetahat, and df
+ruvb_bfa_gs_linked_se <- function(Y, X, control_genes, num_sv) {
+  ruvbout <- vicar::ruvb(Y = Y, X = X, ctl = control_genes, k = num_sv,
+                         fa_func = vicar::bfa_gs_linked,
+                         fa_args = list(use_code = "r", nsamp = 10000),
+                         cov_of_interest = 2)
+
+  return(list(betahat = ruvbout$means,
+              sebetahat = ruvbout$sd,
+              df = nrow(Y) - ncol(X) - num_sv,
               lower = ruvbout$lower,
               upper = ruvbout$upper))
 }
