@@ -30,12 +30,12 @@ mse_mat <- select(mse_mat, -Seed, -Poisthin)
 ## Coverage Plot -------------------------------------------------
 
 longdat <- gather(data = cov_mat, key = "Method", value = "Coverage", -(1:3))
-pdf(file = "./Output/figures/coverage.pdf", height = 12, width = 12, family = "Times")
+pdf(file = "./Output/figures/coverage.pdf", height = 12, width = 15, family = "Times")
 p <- ggplot(data = longdat, mapping = aes(y = Coverage, x = Method)) +
     geom_boxplot(outlier.size = 0.2, size = 0.2) +
     facet_grid(Pi0 + NControls ~ SampleSize) +
     geom_hline(yintercept = 0.95, lty = 2) +
-    theme_bw() + theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    theme_bw() + theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
     theme(strip.background = element_rect(fill="white"))
 print(p)
 dev.off()
@@ -48,7 +48,7 @@ p <- ggplot(data = longdat, mapping = aes(y = Coverage, x = Method)) +
     geom_boxplot(outlier.size = 0.2, size = 0.2) +
     facet_grid(NControls ~ SampleSize) +
     geom_hline(yintercept = 0.95, lty = 2) +
-    theme_bw() + theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    theme_bw() + theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
     theme(strip.background = element_rect(fill="white"))
 print(p)
 dev.off()

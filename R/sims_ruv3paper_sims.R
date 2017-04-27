@@ -42,19 +42,19 @@ one_rep <- function(new_params, current_params) {
   method_list        <- list()
   method_list$ols_o  <- ols(Y = Y, X = X)
   method_list$ols_m  <- mad_adjust(method_list$ols_o)
-  method_list$ols_c  <- ctl_adjust(method_list$ols_o)
+  method_list$ols_c  <- ctl_adjust(method_list$ols_o, control_genes = control_genes)
   method_list$ols_l  <- limma_adjust(method_list$ols_o)
   method_list$ols_lm <- mad_adjust(method_list$ols_l)
-  method_list$ols_lc <- ctl_adjust(method_list$ols_l)
+  method_list$ols_lc <- ctl_adjust(method_list$ols_l, control_genes = control_genes)
 
   ## RUV2 --------------------------------------------------------------------
   method_list$ruv2_o  <- ruv2_simp(Y = Y, X = X, num_sv = num_sv,
                                    control_genes = control_genes)
   method_list$ruv2_m  <- mad_adjust(method_list$ruv2_o)
-  method_list$ruv2_c  <- ctl_adjust(method_list$ruv2_o)
+  method_list$ruv2_c  <- ctl_adjust(method_list$ruv2_o, control_genes = control_genes)
   method_list$ruv2_l  <- limma_adjust(method_list$ruv2_o)
   method_list$ruv2_lm <- mad_adjust(method_list$ruv2_l)
-  method_list$ruv2_lc <- ctl_adjust(method_list$ruv2_l)
+  method_list$ruv2_lc <- ctl_adjust(method_list$ruv2_l, control_genes = control_genes)
 
   ## RUV3 --------------------------------------------------------------------
   method_list$ruv3_o  <- ruv3_simp(Y = Y, X = X, num_sv = num_sv,
@@ -77,36 +77,39 @@ one_rep <- function(new_params, current_params) {
   method_list$ruv4_o  <- ruv4_simp(Y = Y, X = X, num_sv = num_sv,
                                    control_genes = control_genes)
   method_list$ruv4_m  <- mad_adjust(method_list$ruv4_o)
-  method_list$ruv4_c  <- ctl_adjust(method_list$ruv4_o)
+  method_list$ruv4_c  <- ctl_adjust(method_list$ruv4_o, control_genes = control_genes)
   method_list$ruv4_l  <- limma_adjust(method_list$ruv4_o)
   method_list$ruv4_lm <- mad_adjust(method_list$ruv4_l)
-  method_list$ruv4_lc <- ctl_adjust(method_list$ruv4_l)
+  method_list$ruv4_lc <- ctl_adjust(method_list$ruv4_l, control_genes = control_genes)
 
   ## CATE -------------------------------------------------------------------
   method_list$cate_o   <- cate_simp(Y = Y, X = X, num_sv = num_sv,
                                     control_genes = control_genes)
   method_list$cate_m   <- mad_adjust(method_list$cate_o)
-  method_list$cate_c   <- ctl_adjust(method_list$cate_o)
+  method_list$cate_c   <- ctl_adjust(method_list$cate_o, control_genes = control_genes)
   method_list$cate_lb  <- cate_limma(Y = Y, X = X, num_sv = num_sv,
                                      control_genes = control_genes)
   method_list$cate_lbm <- mad_adjust(method_list$cate_lb)
-  method_list$cate_lbc <- ctl_adjust(method_list$cate_lb)
+  method_list$cate_lbc <- ctl_adjust(method_list$cate_lb, control_genes = control_genes)
   method_list$cate_la  <- limma_adjust(method_list$cate_o)
   method_list$cate_lam <- mad_adjust(method_list$cate_la)
-  method_list$cate_lac <- ctl_adjust(method_list$cate_la)
+  method_list$cate_lac <- ctl_adjust(method_list$cate_la, control_genes = control_genes)
   method_list$cate_d   <- cate_simp_nc_correction(Y = Y, X = X, num_sv = num_sv,
                                                   control_genes = control_genes)
   method_list$cate_dm  <- mad_adjust(method_list$cate_d)
-  method_list$cate_dc  <- ctl_adjust(method_list$cate_d)
+  method_list$cate_dc  <- ctl_adjust(method_list$cate_d, control_genes = control_genes)
   method_list$cate_dl  <- limma_adjust(method_list$cate_d)
   method_list$cate_dlm <- mad_adjust(method_list$cate_dl)
-  method_list$cate_dlc <- ctl_adjust(method_list$cate_dl)
+  method_list$cate_dlc <- ctl_adjust(method_list$cate_dl, control_genes = control_genes)
 
   ## t-approximation version of RUVB -------------------------------------
   method_list$ruvbn    <- ruvb_bfa_gs_linked_se(Y = Y, X = X, num_sv = num_sv,
                                                 control_genes = control_genes)
   method_list$ruvbnl   <- limma_adjust(method_list$ruvbn)
 
+  ## Normal approximation version of RUVB --------------------------------
+  method_list$ruvbnn   <- method_list$ruvbn
+  method_list$ruvbnn$df <- Inf
 
   ## Get CI's and p-values ----------------------------------------------------
   pci_list <- lapply(X = method_list, FUN = calc_ci_p)
@@ -114,10 +117,6 @@ one_rep <- function(new_params, current_params) {
   ## sample version of RUVB ---------------------------------------------------
   pci_list$ruvb <- list(betahat = method_list$ruvbn$betahat, pvalues = pci_list$ruvbn$pvalues,
                         lower = method_list$ruvbn$lower, upper = method_list$ruvbn$upper)
-
-  ## Fit RUVB ----------------------------------------------------------------
-  # pci_list$ruvb <- ruvb_bfa_gs_linked(Y = Y, X = X, num_sv = num_sv,
-  #                                     control_genes = control_genes)
 
   ## Get summary quantities --------------------------------------------------
   get_mse <- function(args, beta_true, control_genes) {
@@ -143,9 +142,6 @@ one_rep <- function(new_params, current_params) {
                     control_genes = control_genes)
   cov_vec <- sapply(pci_list, get_coverage, beta_true = beta_true,
                     control_genes = control_genes)
-
-  cov_vec
-  auc_vec
 
   return_vec <- c(mse_vec, auc_vec, cov_vec)
   xtot.time <- proc.time() - start.time
@@ -188,8 +184,8 @@ mat <- t(as.matrix(read.csv("./Output/gtex_tissue_gene_reads_v6p/muscle.csv",
 args_val$mat <- mat[, order(apply(mat, 2, median), decreasing = TRUE)[1:args_val$Ngene]]
 rm(mat)
 
-# oout <- one_rep(par_list[[1]], args_val)
-# oout
+## oout <- one_rep(par_list[[1]], args_val)
+## oout
 
 ## ## If on your own computer, use this
 library(snow)

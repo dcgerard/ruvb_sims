@@ -210,9 +210,13 @@ limma_adjust <- function(obj) {
 #'      and whose third element is df
 #' @param control_genes The control genes
 ctl_adjust <- function(obj, control_genes) {
+  stopifnot(is.logical(control_genes))
   betahat   <- obj[[1]]
   sebetahat <- obj[[2]]
   df        <- obj[[3]]
+  stopifnot(length(control_genes) == length(betahat))
+  stopifnot(length(sebetahat) == length(betahat))
+  stopifnot(all(sebetahat >= 0, na.rm = TRUE))
   mult_val      <- mean(betahat[control_genes] ^ 2 / sebetahat[control_genes] ^ 2)
   sebetahat_adjusted <- sqrt(mult_val) * sebetahat
   return(list(betahat = betahat, sebetahat = sebetahat_adjusted, df = df))
@@ -224,6 +228,8 @@ mad_adjust <- function(obj) {
   betahat   <- obj[[1]]
   sebetahat <- obj[[2]]
   df        <- obj[[3]]
+  stopifnot(length(sebetahat) == length(betahat))
+  stopifnot(all(sebetahat >= 0, na.rm = TRUE))
   mult_val <- stats::mad(betahat ^ 2 / sebetahat ^ 2, center = 0, na.rm = TRUE)
   sebetahat_adjusted <- sqrt(mult_val) * sebetahat
   return(list(betahat = betahat, sebetahat = sebetahat_adjusted, df = df))
@@ -237,6 +243,9 @@ calc_ci_p <- function(obj, alpha = 0.05) {
   betahat   <- obj[[1]]
   sebetahat <- obj[[2]]
   df        <- obj[[3]]
+
+  stopifnot(length(sebetahat) == length(betahat))
+  stopifnot(all(sebetahat >= 0, na.rm = TRUE))
 
   tstats    <- betahat / sebetahat
   pvalues   <- 2 * stats::pt(-abs(tstats), df = df)
