@@ -80,14 +80,18 @@ var_method <- factor(var_method, levels = c("o", "l", "c",
 
 sumdat$var_method <- var_method
 
+thresh <- 0.7
+sumdat$lty_vec <- sumdat$lower < thresh
+
 
 pdf(file = "./Output/figures/horizontal_lines.pdf",
     height = 9, width = 7, family = "Times", colormodel = "cmyk")
 pl <- ggplot(data = sumdat, mapping = aes(color = mean_method,
                                           group = Method,
-                                          x = var_method)) +
+                                          x = var_method,
+                                          lty = lty_vec)) +
   geom_linerange(mapping = aes(ymin = lower, ymax = upper),
-                 position = position_dodge(width = 0.7)) +
+                 position = position_dodge(width = 0.8)) +
   facet_grid(Pi0 + NControls ~ SampleSize) +
   theme_bw() +
   theme(strip.background = element_rect(fill = "white"),
@@ -96,9 +100,10 @@ pl <- ggplot(data = sumdat, mapping = aes(color = mean_method,
                                    vjust = 0.5)) +
   scale_color_discrete(name = "Mean Method") +
   geom_hline(yintercept = 0.95, lty = 2) +
-  coord_cartesian(ylim = c(0.7, 1)) +
+  coord_cartesian(ylim = c(thresh, 1)) +
   ylab("Quantiles of Coverage") +
-  xlab("Variance Method")
+  xlab("Variance Method") +
+  scale_linetype_discrete(name = paste0("Below ", thresh))
 print(pl)
 dev.off()
 
@@ -119,17 +124,32 @@ sumdat <- longdat %>% group_by(Pi0, SampleSize, NControls, Method) %>%
 combdat <- select(sumdat, Pi0, SampleSize, NControls, Method, Less, Greater) %>%
   gather(key = "Loss", value = "Proportion", Less, Greater)
 
-factor_vec <- rep("other", length = nrow(combdat))
-factor_vec[stringr::str_detect(combdat$Method, "c$")] <- "c"
-factor_vec[stringr::str_detect(combdat$Method, "m$")] <- "m"
+factor_vec <- rep("Other", length = nrow(combdat))
+factor_vec[stringr::str_detect(combdat$Method, "c$")] <- "Control Adjustment"
+factor_vec[stringr::str_detect(combdat$Method, "m$")] <- "MAD Adjustment"
 factor_vec[combdat$Method == "RUVB" | combdat$Method == "RUVBnn"] <- "RUVB"
 combdat$categories <- as.factor(factor_vec)
+
+
+#' gg_color_hue copied from http://stackoverflow.com/questions/8197559/emulate-ggplot2-default-color-palette
+gg_color_hue <- function(n) {
+  hues = seq(15, 375, length = n + 1)
+  hcl(h = hues, l = 65, c = 100)[1:n]
+}
+
+myColors <- gg_color_hue(4)
+names(myColors) <- levels(combdat$categories)
+myColors[names(myColors) == "RUVB"] <- "black"
+alpha_vec <- rep(0.7, length = nrow(combdat))
+alpha_vec[combdat$Method == "RUVB" | combdat$Method == "RUVBnn"] <- 1
+combdat$alpha <- alpha_vec
 
 pdf(file = "./Output/figures/loss_plots.pdf", height = 9, width = 8,
     family = "Times", colormodel = "cmyk")
 pl <- ggplot(data = combdat, mapping = aes(x = Loss, y = Proportion,
                                      group = Method,
-                                     color = categories)) +
+                                     color = categories,
+                                     alpha = alpha_vec)) +
   geom_line() +
   facet_grid(Pi0 + NControls ~ SampleSize) +
   theme_bw() +
@@ -137,6 +157,8 @@ pl <- ggplot(data = combdat, mapping = aes(x = Loss, y = Proportion,
   coord_cartesian(xlim = c(1.45, 1.55)) +
   xlab("Loss Type") +
   ylab("Loss") +
-  scale_color_discrete(name = "Category")
+  scale_color_manual(name = "Category", values = myColors) +
+  scale_alpha_continuous(range = c(.3, 1), guide = FALSE)
 print(pl)
 dev.off()
+
