@@ -127,6 +127,7 @@ combdat <- select(sumdat, Pi0, SampleSize, NControls, Method, Less, Greater) %>%
 factor_vec <- rep("Other", length = nrow(combdat))
 factor_vec[stringr::str_detect(combdat$Method, "c$")] <- "Control Adjustment"
 factor_vec[stringr::str_detect(combdat$Method, "m$")] <- "MAD Adjustment"
+factor_vec[stringr::str_detect(combdat$Method, "OLS")] <- "OLS"
 factor_vec[combdat$Method == "RUVB" | combdat$Method == "RUVBnn"] <- "RUVB"
 combdat$categories <- as.factor(factor_vec)
 
@@ -137,11 +138,13 @@ gg_color_hue <- function(n) {
   hcl(h = hues, l = 65, c = 100)[1:n]
 }
 
-myColors <- gg_color_hue(4)
+myColors <- gg_color_hue(length(unique(factor_vec)))
 names(myColors) <- levels(combdat$categories)
 myColors[names(myColors) == "RUVB"] <- "black"
+myColors[names(myColors) == "OLS"] <- "purple"
 alpha_vec <- rep(0.7, length = nrow(combdat))
 alpha_vec[combdat$Method == "RUVB" | combdat$Method == "RUVBnn"] <- 1
+alpha_vec[stringr::str_detect(combdat$Method, "OLS")] <- 1
 combdat$alpha <- alpha_vec
 
 pdf(file = "./Output/figures/loss_plots.pdf", height = 9, width = 8,
@@ -161,4 +164,7 @@ pl <- ggplot(data = combdat, mapping = aes(x = Loss, y = Proportion,
   scale_alpha_continuous(range = c(.3, 1), guide = FALSE)
 print(pl)
 dev.off()
+
+
+
 
