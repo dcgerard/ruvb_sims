@@ -230,8 +230,8 @@ mad_adjust <- function(obj) {
   df        <- obj[[3]]
   stopifnot(length(sebetahat) == length(betahat))
   stopifnot(all(sebetahat >= 0, na.rm = TRUE))
-  mult_val <- stats::mad(betahat ^ 2 / sebetahat ^ 2, center = 0, na.rm = TRUE)
-  sebetahat_adjusted <- sqrt(mult_val) * sebetahat
+  mult_val <- stats::mad(betahat / sebetahat, center = 0, na.rm = TRUE)
+  sebetahat_adjusted <- mult_val * sebetahat
   return(list(betahat = betahat, sebetahat = sebetahat_adjusted, df = df))
 }
 
