@@ -122,7 +122,6 @@ $(sims_out) : $(tissue_dat) ./R/sims_ruv3paper_sims.R
 
 ## plot simulations
 .PHONY : sims
-sims : $(sims_out) ./R/sims_paper_plots.R ./R/sims_paper_plots_line.R
+sims : $(sims_out) ./R/sim_plots_revamped_cleaned.R
 	mkdir -p Output/figures
-	Rscript ./R/sims_paper_plots.R
-	Rscript ./R/sims_paper_plots_line.R
+	Rscript ./R/sim_plots_revamped_cleaned.R

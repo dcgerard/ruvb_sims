@@ -26,7 +26,7 @@ pl <- ggplot(data = longdat, mapping = aes(y = AUC, x = Method)) +
   geom_boxplot(outlier.size = 0.2, size = 0.2) +
   facet_grid(Pi0 + NControls ~ SampleSize) +
   geom_hline(yintercept = 0, lty = 2) +
-  xlab("Method") + ylab("Difference in AUC") +
+  xlab("Method") + ylab("Difference in AUC from RUVB (with EVBM)") +
   theme_bw() + theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
   theme(strip.background = element_rect(fill="white"),
         axis.text.x = element_text(size = 7))
@@ -45,20 +45,21 @@ med_dat$Upper <- med_dat$Mean + 1.96 * med_dat$SD / sqrt(500)
 dat <- filter(med_dat, Pi0 == 0.5, Method %in% c("RUV2l", "RUV3lb", "CATEdl"))
 dat$Method[dat$Method == "RUV2l"] <- "RUV2"
 dat$Method[dat$Method == "RUV3lb"] <- "RUV3"
-dat$Method[dat$Method == "CATEdl"] <- "CATE"
+dat$Method[dat$Method == "CATEdl"] <- "RUV4/CATE"
 pl <- ggplot(data = dat,
              mapping = aes(x = SampleSize, y = Mean, lty = Method, color = Method)) +
   facet_grid(NControls ~.) +
   geom_line() +
   theme_bw() +
   geom_hline(yintercept = 0, lty = 2) +
-  theme(strip.background = element_rect(fill = "white")) +
-  ylab("Mean AUC Difference from Shrunk RUVB") +
+  theme(strip.background = element_rect(fill = "white"),
+        axis.title = element_text(size = 10)) +
+  ylab("Mean AUC Difference from RUVB (with EBVM)") +
   xlab("Sample Size") +
   geom_linerange(mapping = aes(ymin = Lower, ymax = Upper)) +
   scale_color_discrete(name = "Best\nMethods") +
   scale_linetype_discrete(name = "Best\nMethods")
-pdf(file = "./Output/figures/auc_medians.pdf", family = "Times", colormodel = "cmyk",
+pdf(file = "./Output/figures/auc_means.pdf", family = "Times", colormodel = "cmyk",
     height = 3.2, width = 6.5)
 print(pl)
 dev.off()
@@ -211,7 +212,7 @@ meddat$Method[meddat$Method == "RUV2o"] <- "RUV2"
 meddat$Method[meddat$Method == "RUV2l"] <- "RUV2+Limma"
 meddat$Method[meddat$Method == "RUV3o"] <- "RUV3"
 meddat$Method[meddat$Method == "RUV3la"] <- "RUV3+Limma"
-meddat$Method[meddat$Method == "CATEd"] <- "CATE"
+meddat$Method[meddat$Method == "CATEd"] <- "RUV4/CATE"
 meddat$Method[meddat$Method == "RUVBnn"] <- "RUVB-normal"
 meddat$Method[meddat$Method == "RUVB"] <- "RUVB-sample"
 pl <- ggplot(data = meddat, mapping = aes(y = Median, x = SampleSize, group = Method, color = Method)) +
