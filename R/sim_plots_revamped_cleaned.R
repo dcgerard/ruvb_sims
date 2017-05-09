@@ -160,7 +160,8 @@ dev.off()
 
 
 ## Now just look at the best methods ------------------------------------------
-subdat <- filter(longdat, Method == "RUVB" | Method == "RUVBnn" | Method == "RUV2o" |
+subdat <- filter(longdat, Method == "OLSo" | Method == "OLSl" |
+                   Method == "RUVB" | Method == "RUVBnn" | Method == "RUV2o" |
                    Method == "RUV2l" | Method == "RUV3o" | Method == "RUV3la" |
                    Method == "CATEd", Pi0 == 0.5) %>%
   select(-var_method, -mean_method)
@@ -208,6 +209,8 @@ for (index in 1:nrow(meddat)) {
 
 
 meddat$Method <- as.character(meddat$Method)
+meddat$Method[meddat$Method == "OLSo"] <- "OLS"
+meddat$Method[meddat$Method == "OLSl"] <- "OLS+Limma"
 meddat$Method[meddat$Method == "RUV2o"] <- "RUV2"
 meddat$Method[meddat$Method == "RUV2l"] <- "RUV2+Limma"
 meddat$Method[meddat$Method == "RUV3o"] <- "RUV3"
