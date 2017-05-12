@@ -120,8 +120,8 @@ combdat <- select(sumdat, Pi0, SampleSize, NControls, Method, Less, Greater) %>%
   gather(key = "Loss", value = "Proportion", Less, Greater)
 
 factor_vec <- rep("Other", length = nrow(combdat))
-factor_vec[stringr::str_detect(combdat$Method, "c$")] <- "Control Adjustment"
-factor_vec[stringr::str_detect(combdat$Method, "m$")] <- "MAD Adjustment"
+factor_vec[stringr::str_detect(combdat$Method, "c$")] <- "Control Calibration"
+factor_vec[stringr::str_detect(combdat$Method, "m$")] <- "MAD Calibration"
 factor_vec[combdat$Method == "RUVB" | combdat$Method == "RUVBnn"] <- "RUVB"
 combdat$categories <- as.factor(factor_vec)
 
@@ -210,11 +210,11 @@ for (index in 1:nrow(meddat)) {
 
 meddat$Method <- as.character(meddat$Method)
 meddat$Method[meddat$Method == "OLSo"] <- "OLS"
-meddat$Method[meddat$Method == "OLSl"] <- "OLS+Limma"
+meddat$Method[meddat$Method == "OLSl"] <- "OLS+EBMV"
 meddat$Method[meddat$Method == "RUV2o"] <- "RUV2"
-meddat$Method[meddat$Method == "RUV2l"] <- "RUV2+Limma"
+meddat$Method[meddat$Method == "RUV2l"] <- "RUV2+EBMV"
 meddat$Method[meddat$Method == "RUV3o"] <- "RUV3"
-meddat$Method[meddat$Method == "RUV3la"] <- "RUV3+Limma"
+meddat$Method[meddat$Method == "RUV3la"] <- "RUV3+EBMV"
 meddat$Method[meddat$Method == "CATEd"] <- "RUV4/CATE"
 meddat$Method[meddat$Method == "RUVBnn"] <- "RUVB-normal"
 meddat$Method[meddat$Method == "RUVB"] <- "RUVB-sample"
@@ -233,3 +233,29 @@ pdf(file = "./Output/figures/coverage_medians.pdf", family = "Times", colormodel
 print(pl)
 dev.off()
 
+
+## Now coverage at n = 40 and meddat plot
+library(gridExtra)
+subdat$Method <- as.character(subdat$Method)
+subdat$Method[subdat$Method == "OLSo"] <- "OLS"
+subdat$Method[subdat$Method == "OLSl"] <- "OLS+EBMV"
+subdat$Method[subdat$Method == "RUV2o"] <- "RUV2"
+subdat$Method[subdat$Method == "RUV2l"] <- "RUV2+EBMV"
+subdat$Method[subdat$Method == "RUV3o"] <- "RUV3"
+subdat$Method[subdat$Method == "RUV3la"] <- "RUV3+EBMV"
+subdat$Method[subdat$Method == "CATEd"] <- "RUV4/CATE"
+subdat$Method[subdat$Method == "RUVBnn"] <- "RUVB-normal"
+subdat$Method[subdat$Method == "RUVB"] <- "RUVB-sample"
+plbox <- ggplot(data = filter(subdat, SampleSize == 40), mapping = aes(x = Method, y = Coverage, fill = Method)) +
+  geom_boxplot(outlier.size = 0.2, size = 0.2) +
+  facet_grid(SampleSize ~ NControls) +
+  geom_hline(yintercept = 0.95, lty = 2) +
+  theme_bw() +
+  theme(strip.background = element_rect(fill = "white"),
+        axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
+  guides(fill = FALSE)
+
+pdf(file = "./Output/figures/combo_cov.pdf", family = "Times", colormodel = "cmyk",
+    width = 6.5, height = 7.5)
+gridExtra::grid.arrange(pl, plbox, ncol = 1)
+dev.off()
