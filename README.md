@@ -32,25 +32,32 @@ sessionInfo()
     ##  [4] limma_3.26.9      sva_3.18.0        genefilter_1.52.1
     ##  [7] mgcv_1.8-17       nlme_3.1-131      devtools_1.12.0  
     ## [10] snow_0.4-2        gridExtra_2.2.1   cate_1.0.4       
-    ## [13] ruv_0.9.6         pROC_1.9.1        reshape2_1.4.2   
-    ## [16] ggplot2_2.2.1     stringr_1.2.0     dplyr_0.5.0      
+    ## [13] ruv_0.9.6         pROC_1.9.1        stringr_1.2.0    
+    ## [16] dplyr_0.5.0       purrr_0.2.2       readr_1.0.0      
+    ## [19] tidyr_0.6.1       tibble_1.2        ggplot2_2.2.1    
+    ## [22] tidyverse_1.1.1  
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] splines_3.3.2        lattice_0.20-34      colorspace_1.3-2    
-    ##  [4] htmltools_0.3.5      stats4_3.3.2         yaml_2.1.14         
-    ##  [7] XML_3.98-1.5         survival_2.41-2      withr_1.0.2         
-    ## [10] DBI_0.6              BiocGenerics_0.16.1  plyr_1.8.4          
-    ## [13] munsell_0.4.3        leapp_1.2            gtable_0.2.0        
-    ## [16] svd_0.4              evaluate_0.10        memoise_1.0.0       
-    ## [19] Biobase_2.30.0       knitr_1.15.1         IRanges_2.4.8       
-    ## [22] parallel_3.3.2       AnnotationDbi_1.32.3 esaBcv_1.2.1        
-    ## [25] Rcpp_0.12.10         xtable_1.8-2         corpcor_1.6.8       
-    ## [28] scales_0.4.1         backports_1.0.5      S4Vectors_0.8.11    
-    ## [31] annotate_1.48.0      digest_0.6.12        stringi_1.1.2       
-    ## [34] grid_3.3.2           rprojroot_1.2        tools_3.3.2         
-    ## [37] magrittr_1.5         lazyeval_0.2.0       tibble_1.2          
-    ## [40] RSQLite_1.1-2        MASS_7.3-45          Matrix_1.2-8        
-    ## [43] rmarkdown_1.3        R6_2.2.0
+    ##  [1] Biobase_2.30.0       svd_0.4              httr_1.2.1          
+    ##  [4] jsonlite_1.3         splines_3.3.2        modelr_0.1.0        
+    ##  [7] stats4_3.3.2         yaml_2.1.14          RSQLite_1.1-2       
+    ## [10] backports_1.0.5      lattice_0.20-34      digest_0.6.12       
+    ## [13] rvest_0.3.2          colorspace_1.3-2     htmltools_0.3.5     
+    ## [16] Matrix_1.2-8         plyr_1.8.4           psych_1.6.12        
+    ## [19] XML_3.98-1.5         esaBcv_1.2.1         broom_0.4.2         
+    ## [22] haven_1.0.0          xtable_1.8-2         corpcor_1.6.8       
+    ## [25] scales_0.4.1         annotate_1.48.0      IRanges_2.4.8       
+    ## [28] withr_1.0.2          BiocGenerics_0.16.1  lazyeval_0.2.0      
+    ## [31] mnormt_1.5-5         survival_2.41-2      magrittr_1.5        
+    ## [34] readxl_0.1.1         memoise_1.0.0        evaluate_0.10       
+    ## [37] MASS_7.3-45          forcats_0.2.0        xml2_1.1.1          
+    ## [40] foreign_0.8-67       tools_3.3.2          hms_0.3             
+    ## [43] S4Vectors_0.8.11     munsell_0.4.3        AnnotationDbi_1.32.3
+    ## [46] grid_3.3.2           leapp_1.2            rmarkdown_1.3       
+    ## [49] gtable_0.2.0         DBI_0.6              reshape2_1.4.2      
+    ## [52] R6_2.2.0             lubridate_1.6.0      knitr_1.15.1        
+    ## [55] rprojroot_1.2        stringi_1.1.2        parallel_3.3.2      
+    ## [58] Rcpp_0.12.10
 
 As you can see above, I've also only tried this out on Ubuntu.
 
@@ -67,8 +74,8 @@ Install R Packages
 To install the needed R packages, run the following in R
 
 ``` r
-install.packages(c("dplyr", "stringr", "ggplot2", "reshape2", "pROC",
-                   "ruv", "cate", "gridExtra", "snow", "devtools", "assertthat"))
+install.packages(c("tidyverse", "stringr", "pROC", "ruv",
+                   "cate", "gridExtra", "snow", "devtools", "assertthat"))
 source("https://bioconductor.org/biocLite.R")
 biocLite(c("sva", "limma"))
 devtools::install_github("dcgerard/vicar")
@@ -94,16 +101,10 @@ Run Make
 
 To reproduce all of the results in Gerard and Stephens (2016), simply run `make` from the terminal.
 
-If you want to reproduce just the results from Section 6.1, run
+If you want to reproduce just the simulation results, run
 
 ``` bash
 make sims
-```
-
-If you want to reproduce just the results from Section 6.2, run
-
-``` bash
-make gtex_analysis
 ```
 
 If you want to reproduce the figure in the introduction, run
@@ -115,7 +116,18 @@ make one_data
 Get Coffee
 ----------
 
-All of these runs (except the last one) should take a very long time (a day to a couple of days). You should get some coffee. If you're in the Chicago area, I would recommend [Plein Air Cafe](http://www.pleinaircafe.co/).
+All of these runs (except the last one) should take a very long time (a day to a couple of days). You should get some coffee. Here is a list of some of my favorite places:
+
+-   Chicago
+    -   [Sawada Coffee](https://www.yelp.com/biz/sawada-coffee-chicago)
+    -   [Plein Air Cafe](https://www.yelp.com/biz/plein-air-cafe-and-eatery-chicago-2)
+-   Seattle
+    -   [Bauhaus Ballard](https://www.yelp.com/biz/bauhaus-ballard-seattle)
+    -   [Cafe Solstice](https://www.yelp.com/biz/cafe-solstice-seattle)
+-   Columbus
+    -   [Yeah, Me Too](https://www.yelp.com/biz/yeah-me-too-columbus)
+    -   [Stauf's Coffee Roasters](https://www.yelp.com/biz/staufs-coffee-roasters-columbus-2)
+    -   [Caffe Apropos](https://www.yelp.com/biz/caff%C3%A9-apropos-columbus-2)
 
 References
 ==========

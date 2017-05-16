@@ -11,7 +11,7 @@ of @gerard2016unifying. The new methods can be found in the
 [vicar](https://github.com/dcgerard/vicar) package.
 
 ```{r, echo = FALSE, results = "hide", message=FALSE}
-liblist <- list("dplyr", "stringr", "ggplot2", "reshape2", "pROC",
+liblist <- list("tidyverse", "stringr", "pROC",
                 "ruv", "cate", "gridExtra", "snow", "devtools", "sva",
                 "limma", "vicar", "seqgendiff", "assertthat")
 lapply(liblist, require, character.only = TRUE)
@@ -39,8 +39,8 @@ install the appropriate R packages, (2) obtain the appropriate data,
 To install the needed R packages, run the following in R
 
 ``` r
-install.packages(c("dplyr", "stringr", "ggplot2", "reshape2", "pROC",
-                   "ruv", "cate", "gridExtra", "snow", "devtools", "assertthat"))
+install.packages(c("tidyverse", "stringr", "pROC", "ruv",
+                   "cate", "gridExtra", "snow", "devtools", "assertthat"))
 source("https://bioconductor.org/biocLite.R")
 biocLite(c("sva", "limma"))
 devtools::install_github("dcgerard/vicar")
@@ -68,14 +68,9 @@ data.
 To reproduce all of the results in @gerard2016unifying, simply run
 `make` from the terminal.
 
-If you want to reproduce just the results from Section 6.1, run
+If you want to reproduce just the simulation results, run
 ``` bash
 make sims
-```
-
-If you want to reproduce just the results from Section 6.2, run
-``` bash
-make gtex_analysis
 ```
 
 If you want to reproduce the figure in the introduction, run
@@ -86,8 +81,17 @@ make one_data
 ## Get Coffee
 
 All of these runs (except the last one) should take a very long time
-(a day to a couple of days). You should get some coffee. If you're in
-the Chicago area, I would recommend
-[Plein Air Cafe](http://www.pleinaircafe.co/).
+(a day to a couple of days). You should get some coffee. Here is a list of some of my favorite places:
+
+* Chicago
+    - [Sawada Coffee](https://www.yelp.com/biz/sawada-coffee-chicago)
+    - [Plein Air Cafe](https://www.yelp.com/biz/plein-air-cafe-and-eatery-chicago-2)
+* Seattle
+    - [Bauhaus Ballard](https://www.yelp.com/biz/bauhaus-ballard-seattle)
+    - [Cafe Solstice](https://www.yelp.com/biz/cafe-solstice-seattle)
+* Columbus
+    - [Yeah, Me Too](https://www.yelp.com/biz/yeah-me-too-columbus)
+    - [Stauf's Coffee Roasters](https://www.yelp.com/biz/staufs-coffee-roasters-columbus-2)
+    - [Caffe Apropos](https://www.yelp.com/biz/caff%C3%A9-apropos-columbus-2)
 
 # References
