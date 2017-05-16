@@ -4,7 +4,7 @@ Reproducing Results of Gerard and Stephens (2016)
 Introduction
 ============
 
-This repository contains code to reproduce the empirical evaluations of Gerard and Stephens (2016). The new methods can be found in the [vicar](https://github.com/dcgerard/vicar) package.
+This repository contains code to reproduce the empirical evaluations of Gerard and Stephens (2017). The new methods can be found in the [vicar](https://github.com/dcgerard/vicar) package.
 
 If you are having trouble reproducing these results, it might be that you need to update some of your R packages. These are the versions that I used:
 
@@ -66,7 +66,7 @@ If you find a bug, please create an [issue](https://github.com/dcgerard/ruvb_sim
 Instructions
 ============
 
-To reproduce the results of Gerard and Stephens (2016), you need to (1) install the appropriate R packages, (2) obtain the appropriate data, (3) run `make` and (4) get some coffee while you wait.
+To reproduce the results of Gerard and Stephens (2017), you need to (1) install the appropriate R packages, (2) obtain the appropriate data, (3) run `make` and (4) get some coffee while you wait.
 
 Install R Packages
 ------------------
@@ -99,7 +99,7 @@ Place the following files in the Data folder:
 Run Make
 --------
 
-To reproduce all of the results in Gerard and Stephens (2016), simply run `make` from the terminal.
+To reproduce all of the results in Gerard and Stephens (2017), simply run `make` from the terminal.
 
 If you want to reproduce just the simulation results, run
 
@@ -132,4 +132,4 @@ All of these runs (except the last one) should take a very long time (a day to a
 References
 ==========
 
-Gerard, David, and Matthew Stephens. 2016. “Unifying and Generalizing Confounder Adjustment Procedures That Use Negative Controls.” *Github Preprint*. <https://github.com/stephenslab/RUV-B>.
+Gerard, David, and Matthew Stephens. 2017. “Unifying and Generalizing Methods for Removing Unwanted Variation Based on Negative Controls.” *Github Preprint*. <https://github.com/stephenslab/RUV-B>.
