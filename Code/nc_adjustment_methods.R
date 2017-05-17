@@ -191,6 +191,7 @@ ruv3_limma_post_adjust <- function(Y, X, num_sv, control_genes) {
 }
 
 
+
 ## Limma shrinking variances (after gls for ruv3 and ruv4)----------------------------------
 ## Apply or not apply to all "simp" functions
 
