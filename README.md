@@ -1,4 +1,4 @@
-Reproducing Results of Gerard and Stephens (2016)
+Reproducing Results of Gerard and Stephens (2017)
 ================
 
 Introduction
@@ -57,7 +57,7 @@ sessionInfo()
     ## [49] gtable_0.2.0         DBI_0.6              reshape2_1.4.2      
     ## [52] R6_2.2.0             lubridate_1.6.0      knitr_1.15.1        
     ## [55] rprojroot_1.2        stringi_1.1.2        parallel_3.3.2      
-    ## [58] Rcpp_0.12.10
+    ## [58] Rcpp_0.12.11
 
 As you can see above, I've also only tried this out on Ubuntu.
 
@@ -89,12 +89,8 @@ Place the following files in the Data folder:
 
 1.  [GTEx\_Data\_V6\_Annotations\_SampleAttributesDS.txt](http://www.gtexportal.org/home/datasets#filesetFilesDiv21)
 2.  [GTEx\_Analysis\_v6p\_RNA-seq\_RNA-SeQCv1.1.8\_gene\_reads.gct.gz](http://www.gtexportal.org/home/datasets#filesetFilesDiv11)
-3.  [gencode.v19.genes.V6p\_model.patched\_contigs.gtf](http://www.gtexportal.org/home/datasets#filesetFilesDiv14)
-4.  [GTEx\_Data\_V6\_Annotations\_SubjectPhenotypesDS.txt](http://www.gtexportal.org/home/datasets#datasetDiv2)
-5.  [HK\_genes.txt](http://www.tau.ac.il/~elieis/HKG/HK_genes.txt)
-6.  gene2ensembl.gz at <ftp://ftp.ncbi.nih.gov/gene/DATA/>
 
-1 through 4 of the above are only available if you are a registered user of the GTEx Portal. I don't think I'm allowed to release these data.
+These files are only available if you are a registered user of the GTEx Portal. I don't think I'm allowed to release these data.
 
 Run Make
 --------
@@ -116,7 +112,7 @@ make one_data
 Get Coffee
 ----------
 
-All of these runs (except the last one) should take a very long time (a day to a couple of days). You should get some coffee. Here is a list of some of my favorite places:
+These runs should take a very long time (a day to a couple of days). You should get some coffee. Here is a list of some of my favorite places:
 
 -   Chicago
     -   [Sawada Coffee](https://www.yelp.com/biz/sawada-coffee-chicago)
@@ -132,4 +128,4 @@ All of these runs (except the last one) should take a very long time (a day to a
 References
 ==========
 
-Gerard, David, and Matthew Stephens. 2017. “Unifying and Generalizing Methods for Removing Unwanted Variation Based on Negative Controls.” *Github Preprint*. <https://github.com/stephenslab/RUV-B>.
+Gerard, David, and Matthew Stephens. 2017. “Unifying and Generalizing Methods for Removing Unwanted Variation Based on Negative Controls.” *Github Preprint*.

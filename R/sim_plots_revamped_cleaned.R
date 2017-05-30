@@ -247,7 +247,8 @@ pl <- ggplot(data = meddat, mapping = aes(y = Median, x = SampleSize, group = Me
   xlab("Sample Size") +
   ylab("Median Coverage") +
   geom_linerange(mapping = aes(ymin = Lower, ymax = Upper),
-                 position = position_dodge(width = 3))
+                 position = position_dodge(width = 3)) +
+  ggtitle("(a)")
 pdf(file = "./Output/figures/coverage_medians.pdf", family = "Times", colormodel = "cmyk",
     height = 3.2, width = 6.5)
 print(pl)
@@ -273,9 +274,15 @@ plbox <- ggplot(data = filter(subdat, SampleSize == 40), mapping = aes(x = Metho
   theme_bw() +
   theme(strip.background = element_rect(fill = "white"),
         axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
-  guides(fill = FALSE)
+  guides(fill = FALSE) +
+  ggtitle("(b)")
 
 pdf(file = "./Output/figures/combo_cov.pdf", family = "Times", colormodel = "cmyk",
     width = 6.5, height = 7.5)
 gridExtra::grid.arrange(pl, plbox, ncol = 1)
 dev.off()
+
+
+
+
+
