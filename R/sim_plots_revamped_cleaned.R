@@ -64,6 +64,26 @@ pdf(file = "./Output/figures/auc_means.pdf", family = "Times", colormodel = "cmy
 print(pl)
 dev.off()
 
+## Tabulate mean AUC for RUVB ----------------------------------------------------------
+ruvbdat <- ddat %>% select(Pi0, SampleSize, NControls, RUVBnl) %>%
+  group_by(Pi0, SampleSize, NControls) %>%
+  summarize(mean_ruvb = mean(RUVBnl)) %>%
+  ungroup() %>%
+  filter(Pi0 != 1)
+ruvbdat$NControls <- as.factor(ruvbdat$NControls)
+pl_ruvb <- ggplot(data = ruvbdat, mapping = aes(x = SampleSize, y = mean_ruvb, lty = NControls)) +
+  geom_line() +
+  facet_grid(~Pi0) +
+  theme_bw() +
+  theme(strip.background = element_rect(fill = "white")) +
+  ylab("Mean AUC") +
+  xlab("Sample Size") +
+  scale_linetype_discrete(name = "Number\nof\nControls")
+
+pdf(file = "./Output/figures/ruvb_auc_means.pdf", family = "Times", colormodel = "cmyk",
+    height = 3.2, width = 6.5)
+print(pl_ruvb)
+dev.off()
 
 ########################################################################################
 ## Now Coverage ------------------------------------------------------------------------
