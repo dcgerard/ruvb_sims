@@ -1,6 +1,9 @@
 library(tidyverse)
 library(stringr)
 
+pal_vec <- c("#999999", "#E69F00", "#56B4E9", "#000000", "#009E73",  "#CC79A7", "#0072B2", "#F0E442", "#D55E00")
+small_pal_vec <- pal_vec[c(4, 6, 7)]
+
 ## First, AUC -------------------------------------------------------------------------
 aucdat <- read_csv(file = "./Output/sims_out/auc_mat2.csv")
 left_vals <- toupper(str_replace(str_extract(names(aucdat)[-(1:5)], "^.+_"), "_", ""))
@@ -46,29 +49,31 @@ dat <- filter(med_dat, Pi0 == 0.5, Method %in% c("RUV2l", "RUV3lb", "CATEdl"))
 dat$Method[dat$Method == "RUV2l"] <- "RUV2"
 dat$Method[dat$Method == "RUV3lb"] <- "RUV3"
 dat$Method[dat$Method == "CATEdl"] <- "RUV4/CATE"
-pl <- ggplot(data = dat,
-             mapping = aes(x = SampleSize, y = Mean, lty = Method, color = Method)) +
+pl_auc <- ggplot(data = dat,
+             mapping = aes(x = SampleSize, y = Mean, color = Method)) +
   facet_grid(NControls ~.) +
   geom_line() +
   theme_bw() +
   geom_hline(yintercept = 0, lty = 2) +
   theme(strip.background = element_rect(fill = "white"),
-        axis.title = element_text(size = 10)) +
+        axis.title = element_text(size = 10),
+        legend.position = "none") +
   ylab("Mean AUC Difference from RUVB (with EBVM)") +
   xlab("Sample Size") +
   geom_linerange(mapping = aes(ymin = Lower, ymax = Upper)) +
-  scale_color_discrete(name = "Best\nMethods") +
+  scale_color_manual(values = small_pal_vec, name = "Best\nMethods") +
   scale_linetype_discrete(name = "Best\nMethods")
 pdf(file = "./Output/figures/auc_means.pdf", family = "Times", colormodel = "cmyk",
     height = 3.2, width = 6.5)
-print(pl)
+print(pl_auc)
 dev.off()
+
+pl_auc <- pl_auc + ggtitle("(a)")
 
 
 ########################################################################################
 ## Now Coverage ------------------------------------------------------------------------
 ########################################################################################
-rm(list = ls())
 
 covdat <- read_csv(file = "./Output/sims_out/cov_mat2.csv")
 left_vals <- toupper(str_replace(str_extract(names(covdat)[-(1:5)], "^.+_"), "_", ""))
@@ -210,17 +215,17 @@ for (index in 1:nrow(meddat)) {
 
 meddat$Method <- as.character(meddat$Method)
 meddat$Method[meddat$Method == "OLSo"] <- "OLS"
-meddat$Method[meddat$Method == "OLSl"] <- "OLS+EBMV"
+meddat$Method[meddat$Method == "OLSl"] <- "OLS+EBVM"
 meddat$Method[meddat$Method == "RUV2o"] <- "RUV2"
-meddat$Method[meddat$Method == "RUV2l"] <- "RUV2+EBMV"
+meddat$Method[meddat$Method == "RUV2l"] <- "RUV2+EBVM"
 meddat$Method[meddat$Method == "RUV3o"] <- "RUV3"
-meddat$Method[meddat$Method == "RUV3la"] <- "RUV3+EBMV"
+meddat$Method[meddat$Method == "RUV3la"] <- "RUV3+EBVM"
 meddat$Method[meddat$Method == "CATEd"] <- "RUV4/CATE"
 meddat$Method[meddat$Method == "RUVBnn"] <- "RUVB-normal"
 meddat$Method[meddat$Method == "RUVB"] <- "RUVB-sample"
-pl <- ggplot(data = meddat, mapping = aes(y = Median, x = SampleSize, group = Method, color = Method)) +
-  geom_line(alpha = 1/2) +
-  facet_grid(. ~ NControls) +
+pl_cov <- ggplot(data = meddat, mapping = aes(y = Median, x = SampleSize, group = Method, color = Method)) +
+  geom_line(alpha = 1) +
+  facet_grid(NControls ~ .) +
   geom_hline(yintercept = 0.95, lty = 2) +
   theme_bw() +
   theme(strip.background = element_rect(fill = "white")) +
@@ -228,10 +233,11 @@ pl <- ggplot(data = meddat, mapping = aes(y = Median, x = SampleSize, group = Me
   ylab("Median Coverage") +
   geom_linerange(mapping = aes(ymin = Lower, ymax = Upper),
                  position = position_dodge(width = 3)) +
-  ggtitle("(a)")
+  ggtitle("(b)") +
+  scale_color_manual(values = pal_vec)
 pdf(file = "./Output/figures/coverage_medians.pdf", family = "Times", colormodel = "cmyk",
     height = 3.2, width = 6.5)
-print(pl)
+print(pl_cov)
 dev.off()
 
 
@@ -239,11 +245,11 @@ dev.off()
 library(gridExtra)
 subdat$Method <- as.character(subdat$Method)
 subdat$Method[subdat$Method == "OLSo"] <- "OLS"
-subdat$Method[subdat$Method == "OLSl"] <- "OLS+EBMV"
+subdat$Method[subdat$Method == "OLSl"] <- "OLS+EBVM"
 subdat$Method[subdat$Method == "RUV2o"] <- "RUV2"
-subdat$Method[subdat$Method == "RUV2l"] <- "RUV2+EBMV"
+subdat$Method[subdat$Method == "RUV2l"] <- "RUV2+EBVM"
 subdat$Method[subdat$Method == "RUV3o"] <- "RUV3"
-subdat$Method[subdat$Method == "RUV3la"] <- "RUV3+EBMV"
+subdat$Method[subdat$Method == "RUV3la"] <- "RUV3+EBVM"
 subdat$Method[subdat$Method == "CATEd"] <- "RUV4/CATE"
 subdat$Method[subdat$Method == "RUVBnn"] <- "RUVB-normal"
 subdat$Method[subdat$Method == "RUVB"] <- "RUVB-sample"
@@ -255,11 +261,14 @@ plbox <- ggplot(data = filter(subdat, SampleSize == 40), mapping = aes(x = Metho
   theme(strip.background = element_rect(fill = "white"),
         axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
   guides(fill = FALSE) +
-  ggtitle("(b)")
+  ggtitle("(c)") +
+  scale_fill_manual(values = pal_vec)
 
+lay <- rbind(c(1, 1, 1, 2, 2, 2, 2, 2, 2, 2),
+             c(3, 3, 3, 3, 3, 3, 3, 3, 3, 3))
 pdf(file = "./Output/figures/combo_cov.pdf", family = "Times", colormodel = "cmyk",
-    width = 6.5, height = 7.5)
-gridExtra::grid.arrange(pl, plbox, ncol = 1)
+    width = 6.5, height = 6.5)
+gridExtra::grid.arrange(pl_auc, pl_cov, plbox, layout_matrix = lay)
 dev.off()
 
 
