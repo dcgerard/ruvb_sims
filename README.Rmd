@@ -13,7 +13,7 @@ of @gerard2016unifying. The new methods can be found in the
 ```{r, echo = FALSE, results = "hide", message=FALSE}
 liblist <- list("tidyverse", "stringr", "pROC",
                 "ruv", "cate", "gridExtra", "snow", "devtools", "sva",
-                "limma", "vicar", "seqgendiff", "assertthat")
+                "limma", "vicar", "seqgendiff", "assertthat", "R.utils")
 lapply(liblist, require, character.only = TRUE)
 ```
 
@@ -40,7 +40,8 @@ To install the needed R packages, run the following in R
 
 ``` r
 install.packages(c("tidyverse", "stringr", "pROC", "ruv",
-                   "cate", "gridExtra", "snow", "devtools", "assertthat"))
+                   "cate", "gridExtra", "snow", "devtools", 
+                   "assertthat", "R.utils"))
 source("https://bioconductor.org/biocLite.R")
 biocLite(c("sva", "limma"))
 devtools::install_github("dcgerard/vicar")
