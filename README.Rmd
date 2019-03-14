@@ -7,14 +7,14 @@ output: github_document
 # Introduction
 
 This repository contains code to reproduce the empirical evaluations
-of @gerard2016unifying. The new methods can be found in the
+of @gerard2017unifying. The new methods can be found in the
 [vicar](https://github.com/dcgerard/vicar) package.
 
 ```{r, echo = FALSE, results = "hide", message=FALSE}
 liblist <- list("tidyverse", "stringr", "pROC",
                 "ruv", "cate", "gridExtra", "snow", "devtools", "sva",
                 "limma", "vicar", "seqgendiff", "assertthat", "R.utils")
-lapply(liblist, require, character.only = TRUE)
+lapply(liblist, library, character.only = TRUE)
 ```
 
 If you are having trouble reproducing these results, it might be that you need to update some of your R packages. These are the versions that I used:
@@ -30,7 +30,7 @@ If you find a bug, please create an
 
 # Instructions
 
-To reproduce the results of @gerard2016unifying, you need to (1)
+To reproduce the results of @gerard2017unifying, you need to (1)
 install the appropriate R packages, (2) obtain the appropriate data,
 (3) run `make` and (4) get some coffee while you wait.
 
@@ -39,15 +39,17 @@ install the appropriate R packages, (2) obtain the appropriate data,
 To install the needed R packages, run the following in R
 
 ``` r
-install.packages(c("tidyverse", "stringr", "pROC", "ruv",
-                   "cate", "gridExtra", "snow", "devtools", 
-                   "assertthat", "R.utils"))
-source("https://bioconductor.org/biocLite.R")
-biocLite(c("sva", "limma"))
+devtools::install_version("ruv", version = "0.9.6", repos = "http://cran.us.r-project.org")
+install.packages(c("tidyverse", "stringr", "pROC", "cate", "gridExtra", 
+                   "snow", "devtools", "assertthat", "R.utils", "BiocManager"))
+BiocManager::install(c("sva", "limma"), update = FALSE)
 devtools::install_github("dcgerard/vicar")
 devtools::install_github("dcgerard/seqgendiff")
 ```
 
+- `ruv` was updated and now the equivalencies between the `vicar` method and
+   the `ruv` method are not *exactly* the same. This is why we install 
+   version 0.9.6 of `ruv`.
 
 ## Get Data
 
@@ -62,7 +64,7 @@ data.
 
 ## Run Make
 
-To reproduce all of the results in @gerard2016unifying, simply run
+To reproduce all of the results in @gerard2017unifying, simply run
 `make` from the terminal.
 
 If you want to reproduce just the simulation results, run
@@ -80,6 +82,10 @@ make one_data
 These runs should take a very long time
 (a day to a couple of days). You should get some coffee. Here is a list of some of my favorite places:
 
+* Washington, DC
+    - [Colony Club](https://www.yelp.com/biz/colony-club-washington)
+    - [Grace Street Coffee](https://www.yelp.com/biz/grace-street-coffee-georgetown)
+    - [Shop Made in DC](https://www.yelp.com/biz/shop-made-in-dc-washington)
 * Chicago
     - [Sawada Coffee](https://www.yelp.com/biz/sawada-coffee-chicago)
     - [Plein Air Cafe](https://www.yelp.com/biz/plein-air-cafe-and-eatery-chicago-2)
@@ -89,6 +95,5 @@ These runs should take a very long time
 * Columbus
     - [Yeah, Me Too](https://www.yelp.com/biz/yeah-me-too-columbus)
     - [Stauf's Coffee Roasters](https://www.yelp.com/biz/staufs-coffee-roasters-columbus-2)
-    - [Caffe Apropos](https://www.yelp.com/biz/caff%C3%A9-apropos-columbus-2)
 
 # References

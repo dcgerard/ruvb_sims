@@ -178,7 +178,7 @@ pl <- ggplot(data = combdat, mapping = aes(x = Loss, y = Proportion,
   ylab("Loss") +
   scale_color_manual(name = "Category", values = myColors) +
   scale_alpha_continuous(range = c(.4, 1), guide = FALSE)
-pdf(file = "./Output/figures/loss_plots.pdf", height = 7.5, width = 6.5,
+pdf(file = "./Output/figures/loss_plots.pdf", height = 5.5, width = 6.5,
     family = "Times", colormodel = "cmyk")
 print(pl)
 dev.off()
@@ -287,8 +287,14 @@ plbox <- ggplot(data = filter(subdat, SampleSize == 40), mapping = aes(x = Metho
 lay <- rbind(c(1, 1, 1, 2, 2, 2, 2, 2, 2, 2),
              c(3, 3, 3, 3, 3, 3, 3, 3, 3, 3))
 pdf(file = "./Output/figures/combo_cov.pdf", family = "Times", colormodel = "cmyk",
-    width = 6.5, height = 6.5)
-gridExtra::grid.arrange(pl_auc, pl_cov, plbox, layout_matrix = lay)
+    width = 6.5, height = 4.9)
+gridExtra::grid.arrange(pl_auc + theme(axis.title = element_text(size = 8),
+                                       text = element_text(size = 8)),
+                        pl_cov + theme(axis.title = element_text(size = 8),
+                                       text = element_text(size = 8)),
+                        plbox + theme(axis.title = element_text(size = 8),
+                                      text = element_text(size = 8)),
+                        layout_matrix = lay)
 dev.off()
 
 

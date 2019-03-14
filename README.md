@@ -12,13 +12,13 @@ If you are having trouble reproducing these results, it might be that you need t
 sessionInfo()
 ```
 
-    ## R version 3.4.4 (2018-03-15)
+    ## R version 3.5.3 (2019-03-11)
     ## Platform: x86_64-pc-linux-gnu (64-bit)
-    ## Running under: Ubuntu 16.04.4 LTS
+    ## Running under: Ubuntu 18.04.2 LTS
     ## 
     ## Matrix products: default
-    ## BLAS: /usr/lib/atlas-base/atlas/libblas.so.3.0
-    ## LAPACK: /usr/lib/atlas-base/atlas/liblapack.so.3.0
+    ## BLAS: /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.7.1
+    ## LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.7.1
     ## 
     ## locale:
     ##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
@@ -32,40 +32,46 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ##  [1] R.utils_2.6.0     R.oo_1.21.0       R.methodsS3_1.7.1
-    ##  [4] assertthat_0.2.0  seqgendiff_0.1.0  vicar_0.1-9      
-    ##  [7] limma_3.26.9      sva_3.18.0        genefilter_1.52.1
-    ## [10] mgcv_1.8-23       nlme_3.1-137      devtools_1.13.5  
-    ## [13] snow_0.4-2        gridExtra_2.3     cate_1.0.4       
-    ## [16] ruv_0.9.7         pROC_1.11.0       forcats_0.3.0    
-    ## [19] stringr_1.3.0     dplyr_0.7.4       purrr_0.2.4      
-    ## [22] readr_1.1.1       tidyr_0.8.0       tibble_1.4.2     
-    ## [25] ggplot2_2.2.1     tidyverse_1.2.1  
+    ##  [1] R.utils_2.8.0       R.oo_1.22.0         R.methodsS3_1.7.1  
+    ##  [4] assertthat_0.2.0    seqgendiff_0.2.0    vicar_0.1-9        
+    ##  [7] limma_3.38.3        sva_3.30.1          BiocParallel_1.16.6
+    ## [10] genefilter_1.64.0   mgcv_1.8-27         nlme_3.1-137       
+    ## [13] usethis_1.4.0       devtools_2.0.1      snow_0.4-3         
+    ## [16] gridExtra_2.3       cate_1.0.4          ruv_0.9.6          
+    ## [19] pROC_1.14.0         forcats_0.4.0       stringr_1.4.0      
+    ## [22] dplyr_0.8.0.1       purrr_0.3.0         readr_1.3.1        
+    ## [25] tidyr_0.8.2         tibble_2.0.1        ggplot2_3.1.0      
+    ## [28] tidyverse_1.2.1    
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] Biobase_2.30.0       svd_0.4              httr_1.3.1          
-    ##  [4] jsonlite_1.5         splines_3.4.4        modelr_0.1.1        
-    ##  [7] stats4_3.4.4         cellranger_1.1.0     yaml_2.1.14         
-    ## [10] pillar_1.2.1         RSQLite_1.1-2        backports_1.0.5     
-    ## [13] lattice_0.20-34      glue_1.2.0           digest_0.6.12       
-    ## [16] rvest_0.3.2          colorspace_1.3-2     htmltools_0.3.5     
-    ## [19] Matrix_1.2-14        plyr_1.8.4           psych_1.6.12        
-    ## [22] XML_3.98-1.10        pkgconfig_2.0.1      esaBcv_1.2.1        
-    ## [25] broom_0.4.3          haven_1.1.1          xtable_1.8-2        
-    ## [28] corpcor_1.6.8        scales_0.5.0         annotate_1.48.0     
-    ## [31] IRanges_2.4.8        withr_1.0.2          BiocGenerics_0.16.1 
-    ## [34] lazyeval_0.2.0       cli_1.0.0            mnormt_1.5-5        
-    ## [37] survival_2.41-3      magrittr_1.5         crayon_1.3.4        
-    ## [40] readxl_1.0.0         memoise_1.0.0        evaluate_0.10       
-    ## [43] MASS_7.3-45          xml2_1.2.0           foreign_0.8-69      
-    ## [46] tools_3.4.4          hms_0.4.2            S4Vectors_0.8.11    
-    ## [49] munsell_0.4.3        AnnotationDbi_1.32.3 bindrcpp_0.2        
-    ## [52] compiler_3.4.4       rlang_0.2.0          grid_3.4.4          
-    ## [55] leapp_1.2            rstudioapi_0.7       rmarkdown_1.9       
-    ## [58] gtable_0.2.0         DBI_0.8              reshape2_1.4.3      
-    ## [61] R6_2.2.2             lubridate_1.7.3      knitr_1.20          
-    ## [64] bindr_0.1            rprojroot_1.3-2      stringi_1.1.7       
-    ## [67] parallel_3.4.4       Rcpp_0.12.16
+    ##  [1] svd_0.4.1            fs_1.2.6             bitops_1.0-6        
+    ##  [4] matrixStats_0.54.0   lubridate_1.7.4.9000 bit64_0.9-7         
+    ##  [7] httr_1.4.0           rprojroot_1.3-2      tools_3.5.3         
+    ## [10] backports_1.1.3      R6_2.4.0             DBI_1.0.0           
+    ## [13] lazyeval_0.2.1       BiocGenerics_0.28.0  colorspace_1.4-0    
+    ## [16] withr_2.1.2          prettyunits_1.0.2    tidyselect_0.2.5    
+    ## [19] processx_3.2.1       bit_1.1-14           compiler_3.5.3      
+    ## [22] cli_1.0.1            rvest_0.3.2          Biobase_2.42.0      
+    ## [25] xml2_1.2.0           desc_1.2.0           scales_1.0.0        
+    ## [28] callr_3.1.1          esaBcv_1.2.1         digest_0.6.18       
+    ## [31] rmarkdown_1.11       pkgconfig_2.0.2      htmltools_0.3.6     
+    ## [34] sessioninfo_1.1.1    rlang_0.3.1          readxl_1.3.0        
+    ## [37] rstudioapi_0.9.0     RSQLite_2.1.1        generics_0.0.2      
+    ## [40] jsonlite_1.6         leapp_1.2            RCurl_1.95-4.11     
+    ## [43] magrittr_1.5         Matrix_1.2-16        Rcpp_1.0.0          
+    ## [46] munsell_0.5.0        S4Vectors_0.20.1     stringi_1.3.1       
+    ## [49] yaml_2.2.0           MASS_7.3-51.1        pkgbuild_1.0.2      
+    ## [52] plyr_1.8.4           grid_3.5.3           blob_1.1.1          
+    ## [55] parallel_3.5.3       crayon_1.3.4         lattice_0.20-38     
+    ## [58] haven_2.1.0          splines_3.5.3        annotate_1.60.0     
+    ## [61] hms_0.4.2            ps_1.3.0             knitr_1.21          
+    ## [64] pillar_1.3.1         corpcor_1.6.9        pkgload_1.0.2       
+    ## [67] stats4_3.5.3         XML_3.98-1.17        glue_1.3.0          
+    ## [70] evaluate_0.13        remotes_2.0.2        modelr_0.1.4        
+    ## [73] testthat_2.0.1       cellranger_1.1.0     gtable_0.2.0        
+    ## [76] xfun_0.5             xtable_1.8-3         broom_0.5.1         
+    ## [79] survival_2.43-3      AnnotationDbi_1.44.0 memoise_1.1.0       
+    ## [82] IRanges_2.16.0
 
 As you can see above, I've also only tried this out on Ubuntu.
 
@@ -82,14 +88,15 @@ Install R Packages
 To install the needed R packages, run the following in R
 
 ``` r
-install.packages(c("tidyverse", "stringr", "pROC", "ruv",
-                   "cate", "gridExtra", "snow", "devtools", 
-                   "assertthat", "R.utils"))
-source("https://bioconductor.org/biocLite.R")
-biocLite(c("sva", "limma"))
+devtools::install_version("ruv", version = "0.9.6", repos = "http://cran.us.r-project.org")
+install.packages(c("tidyverse", "stringr", "pROC", "cate", "gridExtra", 
+                   "snow", "devtools", "assertthat", "R.utils", "BiocManager"))
+BiocManager::install(c("sva", "limma"), update = FALSE)
 devtools::install_github("dcgerard/vicar")
 devtools::install_github("dcgerard/seqgendiff")
 ```
+
+-   `ruv` was updated and now the equivalencies between the `vicar` method and the `ruv` method are not *exactly* the same. This is why we install version 0.9.6 of `ruv`.
 
 Get Data
 --------
@@ -123,6 +130,10 @@ Get Coffee
 
 These runs should take a very long time (a day to a couple of days). You should get some coffee. Here is a list of some of my favorite places:
 
+-   Washington, DC
+    -   [Colony Club](https://www.yelp.com/biz/colony-club-washington)
+    -   [Grace Street Coffee](https://www.yelp.com/biz/grace-street-coffee-georgetown)
+    -   [Shop Made in DC](https://www.yelp.com/biz/shop-made-in-dc-washington)
 -   Chicago
     -   [Sawada Coffee](https://www.yelp.com/biz/sawada-coffee-chicago)
     -   [Plein Air Cafe](https://www.yelp.com/biz/plein-air-cafe-and-eatery-chicago-2)
@@ -132,9 +143,8 @@ These runs should take a very long time (a day to a couple of days). You should 
 -   Columbus
     -   [Yeah, Me Too](https://www.yelp.com/biz/yeah-me-too-columbus)
     -   [Stauf's Coffee Roasters](https://www.yelp.com/biz/staufs-coffee-roasters-columbus-2)
-    -   [Caffe Apropos](https://www.yelp.com/biz/caff%C3%A9-apropos-columbus-2)
 
 References
 ==========
 
-Gerard, David, and Matthew Stephens. 2017. “Unifying and Generalizing Methods for Removing Unwanted Variation Based on Negative Controls.” *Github Preprint*.
+Gerard, David, and Matthew Stephens. 2017. “Unifying and Generalizing Methods for Removing Unwanted Variation Based on Negative Controls.” *arXiv Preprint arXiv:1705.08393*. <https://arxiv.org/abs/1705.08393>.
