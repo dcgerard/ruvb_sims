@@ -1,3 +1,8 @@
+#######
+## Simulations corresponding to the Statistica Sinica revisions requiring
+## covariates to be correlated with latent factors.
+#######
+
 one_rep <- function(new_params, current_params) {
   source("./Code/nc_adjustment_methods.R")
   args_val <- append(current_params, new_params)
@@ -5,6 +10,8 @@ one_rep <- function(new_params, current_params) {
 
   ## Choose all of the genes because already got top expressed
   stopifnot(args_val$Ngene == ncol(args_val$mat))
+
+
   d_out <- seqgendiff::poisthin(mat = args_val$mat,
                                 nsamp = args_val$Nsamp,
                                 ngene = args_val$Ngene,
@@ -12,7 +19,17 @@ one_rep <- function(new_params, current_params) {
                                 signal_params = list(mean = 0, sd = args_val$log2foldsd),
                                 gvec = rep(TRUE, args_val$Ngene),
                                 gselect = "custom",
-                                prop_null = args_val$nullpi)
+                                prop_null = args_val$nullpi,
+                                group_assign = "cor",
+                                corvec = args_val$cor[[1]])
+  X <- d_out$X
+
+  ## Make sure all individuals aren't placed into same group by placing
+  ## A random individual in the other group.
+  if (all(abs(X[, 2] - 1) < 10^-6) | all(abs(X[, 2] < 10^-6))) {
+    ind_replace <- sample(seq_len(nrow(X)), size = 1)
+    X[ind_replace, 2] <- abs(X[ind_replace, 2] - 1) ## turns 0 to 1 and 1 to 0.
+  }
 
   which_null <- abs(d_out$beta) < 10 ^ -6
   nnull         <- sum(which_null)
@@ -21,7 +38,6 @@ one_rep <- function(new_params, current_params) {
 
   beta_true <- d_out$beta
 
-  X <- d_out$X
   colnames(X) <- c("Intercept", "Treatment")
   Y <- log2(d_out$Y + 1)
 
@@ -143,7 +159,26 @@ one_rep <- function(new_params, current_params) {
   cov_vec <- sapply(pci_list, get_coverage, beta_true = beta_true,
                     control_genes = control_genes)
 
-  return_vec <- c(mse_vec, auc_vec, cov_vec)
+  ## Save parameters
+  par_settings <- c(log2foldsd = current_params$log2foldsd,
+                    Ngene = current_params$Ngene,
+                    log2foldmean = current_params$log2foldmean,
+                    skip_gene = current_params$skip_gene,
+                    current_seed = new_params$current_seed,
+                    nullpi = new_params$nullpi,
+                    Nsamp = new_params$Nsamp,
+                    ncontrols = new_params$ncontrols,
+                    cor = switch(names(new_params$cor),
+                                 "a" = 1,
+                                 "b" = 2,
+                                 "c" = 3,
+                                 "d" = 4,
+                                 "e" = 5,
+                                 "f" = 6,
+                                 stop("no match")),
+                    poisthin = new_params$poisthin)
+
+  return_vec <- c(par_settings, mse_vec, auc_vec, cov_vec)
   xtot.time <- proc.time() - start.time
   return(return_vec)
 }
@@ -152,15 +187,27 @@ itermax <- 500 ## itermax should be 500
 seed_start <- 2222
 
 ## these change
-nullpi_seq   <- c(0.5, 0.9, 1)
+nullpi_seq   <- c(0.9)
 Nsamp_seq    <- c(6, 10, 20, 40)
-ncontrol_seq <- c(10, 100)
+ncontrol_seq <- c(100)
+cor_list     <- list(a = 0, b = 0.25, c = 0.5, d = 0.75, e = c(0.25, 0.25), f = c(0.5, 0.5))
 
-par_vals <- expand.grid(list((1 + seed_start):(itermax + seed_start),
-                             nullpi_seq, Nsamp_seq, ncontrol_seq))
-colnames(par_vals) <- c("current_seed", "nullpi", "Nsamp", "ncontrols")
+par_vals <- expand.grid(current_seed = (1 + seed_start):(itermax + seed_start),
+                        nullpi       = nullpi_seq,
+                        Nsamp        = Nsamp_seq,
+                        ncontrols    = ncontrol_seq,
+                        cor          = cor_list)
 par_vals$poisthin <- TRUE
 par_vals$poisthin[abs(par_vals$nullpi - 1) < 10 ^ -10] <- FALSE
+
+## Re order par_vals to get even computation time on all notes
+par_vals <- par_vals[sample(seq_len(nrow(par_vals))), ]
+
+library(tidyverse)
+par_vals %>%
+  mutate(cor = map_chr(cor, ~str_c("(", str_c(., collapse = ", "), ")", collapse = ""))) ->
+  par_vals_2
+
 
 par_list <- list()
 for (list_index in 1:nrow(par_vals)) {
@@ -184,20 +231,26 @@ mat <- t(as.matrix(read.csv("./Output/gtex_tissue_gene_reads_v6p/muscle.csv",
 args_val$mat <- mat[, order(apply(mat, 2, median), decreasing = TRUE)[1:args_val$Ngene]]
 rm(mat)
 
-## oout <- one_rep(par_list[[1]], args_val)
-## oout
+## try-catch
+safe_one_rep <- safely(one_rep)
+
+# oout <- safe_one_rep(par_list[[219]], args_val)
+# oout
+
+
 
 ## ## If on your own computer, use this
 library(snow)
 library(parallel)
 cl <- makeCluster(detectCores() - 2)
-sout <- t(snow::parSapply(cl = cl, par_list, FUN = one_rep, current_params = args_val))
+sout <- t(snow::parSapply(cl = cl, par_list, FUN = safe_one_rep, current_params = args_val))
 stopCluster(cl)
 
-save(sout, file = "./Output/sims_out/general_sims2.Rd")
-mse_mat <- cbind(par_vals, sout[, 1:(ncol(sout) / 3)])
-auc_mat <- cbind(par_vals, sout[, (ncol(sout) / 3 + 1):(2 * ncol(sout) / 3)])
-cov_mat <- cbind(par_vals, sout[, (2 * ncol(sout) / 3 + 1):ncol(sout)])
-write.csv(mse_mat, file = "./Output/sims_out/mse_mat2.csv", row.names = FALSE)
-write.csv(auc_mat, file = "./Output/sims_out/auc_mat2.csv", row.names = FALSE)
-write.csv(cov_mat, file = "./Output/sims_out/cov_mat2.csv", row.names = FALSE)
+saveRDS(object = sout, file = "./Output/cor_sims_out/cor_sims.RDS")
+saveRDS(object = par_vals_2, file = "./Output/cor_sims_out/par_vals_2.RDS")
+# mse_mat <- cbind(par_vals_2, sout[, 1:(ncol(sout) / 3)])
+# auc_mat <- cbind(par_vals_2, sout[, (ncol(sout) / 3 + 1):(2 * ncol(sout) / 3)])
+# cov_mat <- cbind(par_vals_2, sout[, (2 * ncol(sout) / 3 + 1):ncol(sout)])
+# write.csv(mse_mat, file = "./Output/cor_sims_out/mse_mat2.csv", row.names = FALSE)
+# write.csv(auc_mat, file = "./Output/cor_sims_out/auc_mat2.csv", row.names = FALSE)
+# write.csv(cov_mat, file = "./Output/cor_sims_out/cov_mat2.csv", row.names = FALSE)

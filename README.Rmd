@@ -13,7 +13,8 @@ of @gerard2017unifying. The new methods can be found in the
 ```{r, echo = FALSE, results = "hide", message=FALSE}
 liblist <- list("tidyverse", "stringr", "pROC",
                 "ruv", "cate", "gridExtra", "snow", "devtools", "sva",
-                "limma", "vicar", "seqgendiff", "assertthat", "R.utils")
+                "limma", "vicar", "seqgendiff", "assertthat", "R.utils", 
+                "broom")
 lapply(liblist, library, character.only = TRUE)
 ```
 
@@ -40,7 +41,7 @@ To install the needed R packages, run the following in R
 
 ``` r
 devtools::install_version("ruv", version = "0.9.6", repos = "http://cran.us.r-project.org")
-install.packages(c("tidyverse", "stringr", "pROC", "cate", "gridExtra", 
+install.packages(c("tidyverse", "stringr", "pROC", "cate", "gridExtra", "broom",
                    "snow", "devtools", "assertthat", "R.utils", "BiocManager"))
 BiocManager::install(c("sva", "limma"), update = FALSE)
 devtools::install_github("dcgerard/vicar")

@@ -31,12 +31,18 @@ tissue_dat = ./Output/gtex_tissue_gene_reads_v6p/adiposetissue.csv \
              ./Output/gtex_tissue_gene_reads_v6p/vagina.csv
 
 sims_out = ./Output/sims_out/auc_mat2.csv \
-	./Output/sims_out/cov_mat2.csv \
-	./Output/sims_out/general_sims2.Rd \
-	./Output/sims_out/mse_mat2.csv
+	   ./Output/sims_out/cov_mat2.csv \
+	   ./Output/sims_out/general_sims2.Rd \
+	   ./Output/sims_out/mse_mat2.csv
 
+## Output from correlation_sims.R
+cor_sims_out = ./Output/cor_sims_out/cor_sims.RDS
 
-all: one_data sims
+## Plots of the results of cor_sims
+cor_plots = ./Output/figures/cor_sims_auc.pdf \
+            ./Output/figures/cov_box.pdf
+
+all: one_data sims corr
 
 ## extract tissue data
 $(tissue_dat) : ./R/gtex_extract_tissues_v6p.R
@@ -59,3 +65,15 @@ $(sims_out) : $(tissue_dat) ./R/sims_ruv3paper_sims.R
 sims : $(sims_out) ./R/sim_plots_revamped_cleaned.R
 	mkdir -p Output/figures
 	Rscript ./R/sim_plots_revamped_cleaned.R
+
+## run correlation simulations
+$(cor_sims_out) : $(tissue_dat) ./R/correlation_sims.R
+	mkdir -p Output/cor_sims_out
+	Rscript ./R/correlation_sims.R
+
+$(cor_plots) : $(cor_sims_out) ./R/plot_correlation_sims.R
+	mkdir -p Output/figures
+	Rscript ./R/plot_correlation_sims.R
+
+.PHONY : corr
+corr : $(cor_plots)
