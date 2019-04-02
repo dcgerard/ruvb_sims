@@ -2,7 +2,7 @@
 ## Plot the results from correlation_sims.R
 #############
 
-library(tidyverse)
+suppressPackageStartupMessages(library(tidyverse))
 library(broom)
 library(ggthemes)
 

@@ -1,4 +1,4 @@
-library(tidyverse)
+suppressPackageStartupMessages(library(tidyverse))
 library(seqgendiff)
 library(limma)
 source("./Code/nc_adjustment_methods.R")
@@ -33,7 +33,7 @@ for (index in 1:length(seed_seq)) {
     }
 }
 
-pmat <- as_data_frame(pmat)
+pmat <- as_tibble(pmat)
 
 pdf(file = "./Output/figures/all_null.pdf", height = 2, width = 6.5, family = "Times", colormodel = "cmyk")
 pl <- ggplot(data = pmat, mapping = aes(x = pvalues)) +
@@ -46,3 +46,4 @@ pl <- ggplot(data = pmat, mapping = aes(x = pvalues)) +
         strip.text = element_blank())
 print(pl)
 dev.off()
+
