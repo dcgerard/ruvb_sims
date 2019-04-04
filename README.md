@@ -93,7 +93,7 @@ R
 
 ``` r
 devtools::install_version("ruv", version = "0.9.6", repos = "http://cran.us.r-project.org")
-install.packages(c("tidyverse", "stringr", "pROC", "cate", "gridExtra", "broom",
+install.packages(c("tidyverse", "pROC", "cate", "gridExtra", "broom",
                    "snow", "devtools", "assertthat", "R.utils", "BiocManager"))
 BiocManager::install(c("sva", "limma"), update = FALSE)
 devtools::install_github("dcgerard/vicar")
@@ -113,17 +113,32 @@ Place the following files in the Data
 2.  [GTEx\_Analysis\_v6p\_RNA-seq\_RNA-SeQCv1.1.8\_gene\_reads.gct.gz](http://www.gtexportal.org/home/datasets#filesetFilesDiv11)
 
 These files are only available if you are a registered user of the GTEx
-Portal. I don’t think I’m allowed to release these data.
+Portal. You can create a free account at <https://gtexportal.org/>
 
 ## Run Make
 
 To reproduce all of the results in Gerard and Stephens (2017), simply
 run `make` from the terminal.
 
-If you want to reproduce just the simulation results, run
+If you want to reproduce just the simulation results in the main text,
+run
 
 ``` bash
 make sims
+```
+
+If you want to reproduce the supplementary simulations with correlated
+confounders, run
+
+``` bash
+make corr
+```
+
+If you want to reproduce the supplementary simulations with misspecified
+negative controls, run
+
+``` bash
+make miss
 ```
 
 If you want to reproduce the figure in the introduction, run
