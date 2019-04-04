@@ -213,10 +213,10 @@ boot_med <- function(x, bootmax = 10000) {
   return(c(median(x), quantile(bvec, probs = c(0.025, 0.975))))
 }
 
-meddat <- as_data_frame(expand.grid(unique(subdat$Pi0),
-                                    unique(subdat$SampleSize),
-                                    unique(subdat$NControls),
-                                    unique(subdat$Method)))
+meddat <- as_tibble(expand.grid(unique(subdat$Pi0),
+                                unique(subdat$SampleSize),
+                                unique(subdat$NControls),
+                                unique(subdat$Method)))
 names(meddat) <- c("Pi0", "SampleSize", "NControls", "Method")
 meddat$Median <- rep(NA, length = nrow(meddat))
 meddat$Lower  <- rep(NA, length = nrow(meddat))

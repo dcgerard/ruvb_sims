@@ -59,7 +59,7 @@ mis_sims_out = ./Output/mis_sims_out/mis_sims.RDS
 mis_plots = ./Output/figures/mis_sims_auc.pdf \
 	    ./Output/figures/mis_box.pdf
 
-all: one_data sims corr
+all: one_data sims corr miss
 
 ## extract tissue data
 $(tissue_dat) : ./R/gtex_extract_tissues_v6p.R
