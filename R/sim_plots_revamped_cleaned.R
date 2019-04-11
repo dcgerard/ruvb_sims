@@ -38,17 +38,16 @@ pdf(file = "./Output/figures/auc_boxplots.pdf", family = "Times", colormodel = "
 print(pl)
 dev.off()
 
-
 med_dat <- group_by(.data = longdat, Pi0, SampleSize, NControls, Method) %>%
   summarise(Mean = mean(AUC), Median = median(AUC), SD = sd(AUC)) %>%
   ungroup()
 med_dat$Lower <- med_dat$Mean - 1.96 * med_dat$SD / sqrt(500)
 med_dat$Upper <- med_dat$Mean + 1.96 * med_dat$SD / sqrt(500)
 
-dat <- filter(med_dat, Pi0 == 0.5, Method %in% c("RUV2l", "RUV3lb", "CATEdl"))
+dat <- filter(med_dat, Pi0 == 0.5, Method %in% c("RUV2l", "RUV3lb", "CATElb"))
 dat$Method[dat$Method == "RUV2l"] <- "RUV2"
 dat$Method[dat$Method == "RUV3lb"] <- "RUV3"
-dat$Method[dat$Method == "CATEdl"] <- "RUV4/CATE"
+dat$Method[dat$Method == "CATElb"] <- "RUV4/CATE"
 pl_auc <- ggplot(data = dat,
              mapping = aes(x = SampleSize, y = Mean, color = Method)) +
   facet_grid(NControls ~.) +
@@ -183,6 +182,31 @@ pdf(file = "./Output/figures/loss_plots.pdf", height = 5.5, width = 6.5,
 print(pl)
 dev.off()
 
+## Mean of combdat -------------------------------------------------------------
+combdat %>%
+  group_by(Loss, categories, Pi0, NControls, SampleSize) %>%
+  summarize(mean_prop = mean(Proportion)) %>%
+  ungroup() %>%
+  mutate(lossnum = 1 * (Loss == "Less")) %>%
+  filter(categories != "Other") %>%
+  ggplot(aes(x = lossnum, y = mean_prop, color = categories)) +
+  geom_line() +
+  facet_grid(Pi0 + NControls ~ SampleSize) +
+  theme_bw() +
+  theme(strip.background = element_rect(fill="white"),
+        axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
+  xlab("Loss Type") +
+  ylab("Loss") +
+  ggthemes::scale_color_colorblind(name = "Category") +
+  scale_x_continuous(breaks = c(0, 1), labels = c("Greater", "Less")) ->
+  pl_clean
+
+pdf(file = "./Output/figures/loss_plots_mean.pdf", height = 5.5, width = 6.5,
+    family = "Times", colormodel = "cmyk")
+print(pl_clean)
+dev.off()
+
+
 
 ## Now just look at the best methods ------------------------------------------
 subdat <- filter(longdat, Method == "OLSo" | Method == "OLSl" |
@@ -251,8 +275,7 @@ pl_cov <- ggplot(data = meddat, mapping = aes(y = Median, x = SampleSize, group 
   theme(strip.background = element_rect(fill = "white")) +
   xlab("Sample Size") +
   ylab("Median Coverage") +
-  geom_linerange(mapping = aes(ymin = Lower, ymax = Upper),
-                 position = position_dodge(width = 3)) +
+  geom_linerange(mapping = aes(ymin = Lower, ymax = Upper), alpha = 1/4, lwd = 1, position = position_dodge(width = 0.3)) +
   ggtitle("(b)") +
   scale_color_manual(values = pal_vec)
 pdf(file = "./Output/figures/coverage_medians.pdf", family = "Times", colormodel = "cmyk",
