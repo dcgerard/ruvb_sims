@@ -24,7 +24,7 @@ If you are having trouble reproducing these results, it might be that you need t
 sessionInfo()
 ```
 
-As you can see above, I've also only tried this out on Ubuntu.
+I've also only tried this out on Ubuntu.
 
 If you find a bug, please create an
 [issue](https://github.com/dcgerard/ruvb_sims/issues).
@@ -39,13 +39,18 @@ install the appropriate R packages, (2) obtain the appropriate data,
 
 To install the needed R packages, run the following in R
 
-``` r
-devtools::install_version("ruv", version = "0.9.6", repos = "http://cran.us.r-project.org")
+```{r, eval=FALSE}
+devtools::install_version("ruv", 
+                          version = "0.9.6", 
+                          repos = "http://cran.us.r-project.org")
 install.packages(c("tidyverse", "pROC", "cate", "gridExtra", "broom",
-                   "snow", "devtools", "assertthat", "R.utils", "BiocManager"))
+                   "snow", "devtools", "assertthat", "R.utils",
+                   "BiocManager"))
 BiocManager::install(c("sva", "limma"), update = FALSE)
-devtools::install_github("dcgerard/vicar")
-devtools::install_github("dcgerard/seqgendiff")
+devtools::install_github("dcgerard/vicar",
+                         ref = "e7caad35b403d83546680a89f5af2b3b4ed5fe6a")
+devtools::install_github("dcgerard/seqgendiff",
+                         ref = "a2fe006e8012cbfe5295e6212938e9fb865be63b")
 ```
 
 - `ruv` was updated and now the equivalencies between the `vicar` method and
