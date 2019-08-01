@@ -106,6 +106,9 @@ devtools::install_github("dcgerard/seqgendiff",
     method and the `ruv` method are not *exactly* the same. This is why
     we install version 0.9.6 of `ruv`.
 
+  - Newer versions of `seqgendiff` should not work as the `poisthin()`
+    function has been replaced by `select_counts()` and `thin_2group()`.
+
 ## Get Data
 
 Place the following files in the Data
