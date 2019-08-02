@@ -16,17 +16,20 @@ sessionInfo()
 ```
 
     ## R version 3.6.1 (2019-07-05)
-    ## Platform: x86_64-w64-mingw32/x64 (64-bit)
-    ## Running under: Windows 10 x64 (build 17134)
+    ## Platform: x86_64-pc-linux-gnu (64-bit)
+    ## Running under: Ubuntu 18.04.2 LTS
     ## 
     ## Matrix products: default
+    ## BLAS:   /usr/lib/x86_64-linux-gnu/openblas/libblas.so.3
+    ## LAPACK: /usr/lib/x86_64-linux-gnu/libopenblasp-r0.2.20.so
     ## 
     ## locale:
-    ## [1] LC_COLLATE=English_United States.1252 
-    ## [2] LC_CTYPE=English_United States.1252   
-    ## [3] LC_MONETARY=English_United States.1252
-    ## [4] LC_NUMERIC=C                          
-    ## [5] LC_TIME=English_United States.1252    
+    ##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+    ##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+    ##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+    ##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+    ##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+    ## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
     ## 
     ## attached base packages:
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
@@ -45,7 +48,7 @@ sessionInfo()
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] svd_0.4.3            bitops_1.0-6         matrixStats_0.54.0  
-    ##  [4] fs_1.3.1             lubridate_1.7.4      bit64_0.9-7         
+    ##  [4] fs_1.3.1             lubridate_1.7.4.9000 bit64_0.9-7         
     ##  [7] httr_1.4.0           rprojroot_1.3-2      tools_3.6.1         
     ## [10] backports_1.1.4      R6_2.4.0             DBI_1.0.0           
     ## [13] lazyeval_0.2.2       BiocGenerics_0.30.0  colorspace_1.4-1    
