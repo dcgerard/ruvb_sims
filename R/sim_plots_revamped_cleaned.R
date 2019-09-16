@@ -4,6 +4,9 @@ library(stringr)
 pal_vec <- c("#999999", "#E69F00", "#56B4E9", "#000000", "#009E73",  "#CC79A7", "#0072B2", "#F0E442", "#D55E00")
 small_pal_vec <- pal_vec[c(4, 6, 7)]
 
+linetype_vec <- c("solid", "solid", "solid", "dashed", "solid", "dotted", "dotdash", "solid", "solid")
+small_linetype_vec <- linetype_vec[c(4, 6, 7)]
+
 ## First, AUC -------------------------------------------------------------------------
 aucdat <- read_csv(file = "./Output/sims_out/auc_mat2.csv")
 left_vals <- toupper(str_replace(str_extract(names(aucdat)[-(1:5)], "^.+_"), "_", ""))
@@ -49,7 +52,7 @@ dat$Method[dat$Method == "RUV2l"] <- "RUV2"
 dat$Method[dat$Method == "RUV3lb"] <- "RUV3"
 dat$Method[dat$Method == "CATElb"] <- "RUV4/CATE"
 pl_auc <- ggplot(data = dat,
-             mapping = aes(x = SampleSize, y = Mean, color = Method)) +
+             mapping = aes(x = SampleSize, y = Mean, color = Method, linetype = Method)) +
   facet_grid(NControls ~.) +
   geom_line() +
   theme_bw() +
@@ -61,7 +64,7 @@ pl_auc <- ggplot(data = dat,
   xlab("Sample Size") +
   geom_linerange(mapping = aes(ymin = Lower, ymax = Upper)) +
   scale_color_manual(values = small_pal_vec, name = "Best\nMethods") +
-  scale_linetype_discrete(name = "Best\nMethods")
+  scale_linetype_manual(values = small_linetype_vec, name = "Best\nMethods")
 pdf(file = "./Output/figures/auc_means.pdf", family = "Times", colormodel = "cmyk",
     height = 3.2, width = 6.5)
 print(pl_auc)
@@ -189,7 +192,7 @@ combdat %>%
   ungroup() %>%
   mutate(lossnum = 1 * (Loss == "Less")) %>%
   filter(categories != "Other") %>%
-  ggplot(aes(x = lossnum, y = mean_prop, color = categories)) +
+  ggplot(aes(x = lossnum, y = mean_prop, color = categories, lty = categories)) +
   geom_line() +
   facet_grid(Pi0 + NControls ~ SampleSize) +
   theme_bw() +
@@ -198,6 +201,7 @@ combdat %>%
   xlab("Loss Type") +
   ylab("Loss") +
   ggthemes::scale_color_colorblind(name = "Category") +
+  scale_linetype_discrete(name = "Category") +
   scale_x_continuous(breaks = c(0, 1), labels = c("Greater", "Less")) ->
   pl_clean
 
@@ -267,7 +271,7 @@ meddat$Method[meddat$Method == "RUV3la"] <- "RUV3+EBVM"
 meddat$Method[meddat$Method == "CATEd"] <- "RUV4/CATE"
 meddat$Method[meddat$Method == "RUVBnn"] <- "RUVB-normal"
 meddat$Method[meddat$Method == "RUVB"] <- "RUVB-sample"
-pl_cov <- ggplot(data = meddat, mapping = aes(y = Median, x = SampleSize, group = Method, color = Method)) +
+pl_cov <- ggplot(data = meddat, mapping = aes(y = Median, x = SampleSize, group = Method, color = Method, linetype = Method)) +
   geom_line(alpha = 1) +
   facet_grid(NControls ~ .) +
   geom_hline(yintercept = 0.95, lty = 2) +
@@ -277,7 +281,8 @@ pl_cov <- ggplot(data = meddat, mapping = aes(y = Median, x = SampleSize, group 
   ylab("Median Coverage") +
   geom_linerange(mapping = aes(ymin = Lower, ymax = Upper), alpha = 1/4, lwd = 1, position = position_dodge(width = 0.3)) +
   ggtitle("(b)") +
-  scale_color_manual(values = pal_vec)
+  scale_color_manual(values = pal_vec) +
+  scale_linetype_manual(values = linetype_vec)
 pdf(file = "./Output/figures/coverage_medians.pdf", family = "Times", colormodel = "cmyk",
     height = 3.2, width = 6.5)
 print(pl_cov)
