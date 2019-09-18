@@ -1,10 +1,10 @@
-Reproducing Results of Gerard and Stephens (2017)
+Reproducing Results of Gerard and Stephens (2019)
 ================
 
 # Introduction
 
 This repository contains code to reproduce the empirical evaluations of
-Gerard and Stephens (2017). The new methods can be found in the
+Gerard and Stephens (2019). The new methods can be found in the
 [vicar](https://github.com/dcgerard/vicar) package.
 
 If you are having trouble reproducing these results, it might be that
@@ -17,7 +17,7 @@ sessionInfo()
 
     ## R version 3.6.1 (2019-07-05)
     ## Platform: x86_64-pc-linux-gnu (64-bit)
-    ## Running under: Ubuntu 18.04.2 LTS
+    ## Running under: Ubuntu 18.04.3 LTS
     ## 
     ## Matrix products: default
     ## BLAS:   /usr/lib/x86_64-linux-gnu/openblas/libblas.so.3
@@ -36,45 +36,46 @@ sessionInfo()
     ## 
     ## other attached packages:
     ##  [1] broom_0.5.2         R.utils_2.9.0       R.oo_1.22.0        
-    ##  [4] R.methodsS3_1.7.1   assertthat_0.2.1    seqgendiff_1.0.0   
+    ##  [4] R.methodsS3_1.7.1   assertthat_0.2.1    seqgendiff_1.1.1   
     ##  [7] vicar_0.1-9         limma_3.40.6        sva_3.32.1         
-    ## [10] BiocParallel_1.18.0 genefilter_1.66.0   mgcv_1.8-28        
-    ## [13] nlme_3.1-141        devtools_2.1.0      usethis_1.5.1      
-    ## [16] snow_0.4-3          gridExtra_2.3       cate_1.0.4         
-    ## [19] ruv_0.9.6           pROC_1.15.3         forcats_0.4.0      
+    ## [10] BiocParallel_1.18.1 genefilter_1.66.0   mgcv_1.8-28        
+    ## [13] nlme_3.1-141        devtools_2.2.0      usethis_1.5.1      
+    ## [16] snow_0.4-3          gridExtra_2.3       cate_1.1           
+    ## [19] ruv_0.9.7.1         pROC_1.15.3         forcats_0.4.0      
     ## [22] stringr_1.4.0       dplyr_0.8.3         purrr_0.3.2        
-    ## [25] readr_1.3.1         tidyr_0.8.3         tibble_2.1.3       
-    ## [28] ggplot2_3.2.0       tidyverse_1.2.1    
+    ## [25] readr_1.3.1         tidyr_1.0.0         tibble_2.1.3       
+    ## [28] ggplot2_3.2.1       tidyverse_1.2.1    
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] svd_0.4.3            bitops_1.0-6         matrixStats_0.54.0  
-    ##  [4] fs_1.3.1             lubridate_1.7.4.9000 bit64_0.9-7         
-    ##  [7] httr_1.4.0           rprojroot_1.3-2      tools_3.6.1         
-    ## [10] backports_1.1.4      R6_2.4.0             DBI_1.0.0           
-    ## [13] lazyeval_0.2.2       BiocGenerics_0.30.0  colorspace_1.4-1    
-    ## [16] withr_2.1.2          prettyunits_1.0.2    processx_3.4.1      
-    ## [19] tidyselect_0.2.5     bit_1.1-14           compiler_3.6.1      
-    ## [22] cli_1.1.0            rvest_0.3.4          Biobase_2.44.0      
-    ## [25] xml2_1.2.1           desc_1.2.0           scales_1.0.0        
-    ## [28] callr_3.3.1          esaBcv_1.2.1         digest_0.6.20       
-    ## [31] rmarkdown_1.14       pkgconfig_2.0.2      htmltools_0.3.6     
-    ## [34] sessioninfo_1.1.1    rlang_0.4.0          readxl_1.3.1        
-    ## [37] rstudioapi_0.10      RSQLite_2.1.2        generics_0.0.2      
-    ## [40] jsonlite_1.6         leapp_1.2            RCurl_1.95-4.12     
-    ## [43] magrittr_1.5         Matrix_1.2-17        Rcpp_1.0.2          
-    ## [46] munsell_0.5.0        S4Vectors_0.22.0     stringi_1.4.3       
-    ## [49] yaml_2.2.0           MASS_7.3-51.4        pkgbuild_1.0.3      
-    ## [52] plyr_1.8.4           grid_3.6.1           blob_1.2.0          
-    ## [55] parallel_3.6.1       crayon_1.3.4         lattice_0.20-38     
-    ## [58] haven_2.1.1          splines_3.6.1        annotate_1.62.0     
-    ## [61] hms_0.5.0            ps_1.3.0             zeallot_0.1.0       
-    ## [64] knitr_1.23           pillar_1.4.2         corpcor_1.6.9       
-    ## [67] pkgload_1.0.2        stats4_3.6.1         XML_3.98-1.20       
-    ## [70] glue_1.3.1           evaluate_0.14        remotes_2.1.0       
-    ## [73] modelr_0.1.4         vctrs_0.2.0          testthat_2.2.1      
-    ## [76] cellranger_1.1.0     gtable_0.3.0         xfun_0.8            
-    ## [79] xtable_1.8-4         survival_2.44-1.1    AnnotationDbi_1.46.0
-    ## [82] memoise_1.1.0        IRanges_2.18.1
+    ##  [1] svd_0.5              fs_1.3.1             bitops_1.0-6        
+    ##  [4] matrixStats_0.55.0   lubridate_1.7.4.9000 bit64_0.9-7         
+    ##  [7] httr_1.4.1           rprojroot_1.3-2      tools_3.6.1         
+    ## [10] backports_1.1.4      DT_0.8               R6_2.4.0            
+    ## [13] DBI_1.0.0            lazyeval_0.2.2       BiocGenerics_0.30.0 
+    ## [16] colorspace_1.4-1     withr_2.1.2          prettyunits_1.0.2   
+    ## [19] processx_3.4.1       tidyselect_0.2.5     bit_1.1-14          
+    ## [22] compiler_3.6.1       cli_1.1.0            rvest_0.3.4         
+    ## [25] Biobase_2.44.0       xml2_1.2.2           desc_1.2.0          
+    ## [28] scales_1.0.0         callr_3.3.1          esaBcv_1.2.1        
+    ## [31] digest_0.6.20        rmarkdown_1.15       pkgconfig_2.0.2     
+    ## [34] htmltools_0.3.6      sessioninfo_1.1.1    htmlwidgets_1.3     
+    ## [37] rlang_0.4.0          readxl_1.3.1         rstudioapi_0.10     
+    ## [40] RSQLite_2.1.2        generics_0.0.2       jsonlite_1.6        
+    ## [43] leapp_1.2            RCurl_1.95-4.12      magrittr_1.5        
+    ## [46] Matrix_1.2-17        Rcpp_1.0.2           munsell_0.5.0       
+    ## [49] S4Vectors_0.22.1     lifecycle_0.1.0      stringi_1.4.3       
+    ## [52] yaml_2.2.0           MASS_7.3-51.4        pkgbuild_1.0.5      
+    ## [55] plyr_1.8.4           grid_3.6.1           blob_1.2.0          
+    ## [58] parallel_3.6.1       crayon_1.3.4         lattice_0.20-38     
+    ## [61] haven_2.1.1          splines_3.6.1        annotate_1.62.0     
+    ## [64] hms_0.5.1            ps_1.3.0             zeallot_0.1.0       
+    ## [67] knitr_1.24           pillar_1.4.2         corpcor_1.6.9       
+    ## [70] pkgload_1.0.2        stats4_3.6.1         XML_3.98-1.20       
+    ## [73] glue_1.3.1           evaluate_0.14        remotes_2.1.0       
+    ## [76] modelr_0.1.5         vctrs_0.2.0          testthat_2.2.1      
+    ## [79] cellranger_1.1.0     gtable_0.3.0         xfun_0.9            
+    ## [82] xtable_1.8-4         survival_2.44-1.1    AnnotationDbi_1.46.1
+    ## [85] memoise_1.1.0        IRanges_2.18.2       ellipsis_0.2.0.1
 
 I’ve also only tried this out on Ubuntu.
 
@@ -83,7 +84,7 @@ If you find a bug, please create an
 
 # Instructions
 
-To reproduce the results of Gerard and Stephens (2017), you need to (1)
+To reproduce the results of Gerard and Stephens (2019), you need to (1)
 install the appropriate R packages, (2) obtain the appropriate data, (3)
 run `make` and (4) get some coffee while you wait.
 
@@ -125,7 +126,7 @@ Portal. You can create a free account at <https://gtexportal.org/>
 
 ## Run Make
 
-To reproduce all of the results in Gerard and Stephens (2017), simply
+To reproduce all of the results in Gerard and Stephens (2019), simply
 run `make` from the terminal.
 
 If you want to reproduce just the simulation results in the main text,
@@ -185,9 +186,9 @@ should get some coffee. Here is a list of some of my favorite places:
 
 <div id="ref-gerard2017unifying">
 
-Gerard, David, and Matthew Stephens. 2017. “Unifying and Generalizing
+Gerard, David, and Matthew Stephens. 2019. “Unifying and Generalizing
 Methods for Removing Unwanted Variation Based on Negative Controls.”
-*arXiv Preprint arXiv:1705.08393*. <https://arxiv.org/abs/1705.08393>.
+*Statistica Sinica*, in press. <https://doi.org/10.5705/ss.202018.0345>.
 
 </div>
 

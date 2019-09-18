@@ -1,5 +1,5 @@
 ---
-title: "Reproducing Results of Gerard and Stephens (2017)"
+title: "Reproducing Results of Gerard and Stephens (2019)"
 bibliography: readme_bib.bib
 output: github_document
 ---
