@@ -1,5 +1,5 @@
 ---
-title: "Reproducing Results of Gerard and Stephens (2019)"
+title: "Reproducing Results of Gerard and Stephens (2021)"
 bibliography: readme_bib.bib
 output: github_document
 ---
@@ -7,7 +7,7 @@ output: github_document
 # Introduction
 
 This repository contains code to reproduce the empirical evaluations
-of @gerard2017unifying. The new methods can be found in the
+of @gerard2021unifying. The new methods can be found in the
 [vicar](https://github.com/dcgerard/vicar) package.
 
 ```{r, echo = FALSE, results = "hide", message=FALSE}
@@ -31,7 +31,7 @@ If you find a bug, please create an
 
 # Instructions
 
-To reproduce the results of @gerard2017unifying, you need to (1)
+To reproduce the results of @gerard2021unifying, you need to (1)
 install the appropriate R packages, (2) obtain the appropriate data,
 (3) run `make` and (4) get some coffee while you wait.
 
@@ -72,7 +72,7 @@ user of the GTEx Portal. You can create a free account at
 
 ## Run Make
 
-To reproduce all of the results in @gerard2017unifying, simply run
+To reproduce all of the results in @gerard2021unifying, simply run
 `make` from the terminal.
 
 If you want to reproduce just the simulation results in the main text, run
@@ -105,7 +105,6 @@ These runs should take a very long time
 * Washington, DC
     - [Colony Club](https://www.yelp.com/biz/colony-club-washington)
     - [Grace Street Coffee](https://www.yelp.com/biz/grace-street-coffee-georgetown)
-    - [Shop Made in DC](https://www.yelp.com/biz/shop-made-in-dc-washington)
 * Chicago
     - [Sawada Coffee](https://www.yelp.com/biz/sawada-coffee-chicago)
     - [Plein Air Cafe](https://www.yelp.com/biz/plein-air-cafe-and-eatery-chicago-2)
