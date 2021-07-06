@@ -15,7 +15,7 @@ I used:
 sessionInfo()
 ```
 
-    ## R version 4.0.5 (2021-03-31)
+    ## R version 4.1.0 (2021-05-18)
     ## Platform: x86_64-pc-linux-gnu (64-bit)
     ## Running under: Ubuntu 20.04.2 LTS
     ## 
@@ -35,48 +35,51 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ##  [1] broom_0.7.6         R.utils_2.10.1      R.oo_1.24.0        
+    ##  [1] broom_0.7.8         R.utils_2.10.1      R.oo_1.24.0        
     ##  [4] R.methodsS3_1.8.1   assertthat_0.2.1    seqgendiff_1.2.2   
-    ##  [7] vicar_0.1-11        limma_3.46.0        sva_3.38.0         
-    ## [10] BiocParallel_1.24.1 genefilter_1.72.1   mgcv_1.8-35        
-    ## [13] nlme_3.1-152        devtools_2.4.0      usethis_2.0.1      
+    ##  [7] vicar_0.1-11        limma_3.48.1        sva_3.40.0         
+    ## [10] BiocParallel_1.26.1 genefilter_1.74.0   mgcv_1.8-36        
+    ## [13] nlme_3.1-152        devtools_2.4.2      usethis_2.0.1      
     ## [16] snow_0.4-3          gridExtra_2.3       cate_1.1.1         
     ## [19] ruv_0.9.7.1         pROC_1.17.0.1       forcats_0.5.1      
-    ## [22] stringr_1.4.0       dplyr_1.0.5         purrr_0.3.4        
-    ## [25] readr_1.4.0         tidyr_1.1.3         tibble_3.1.1       
-    ## [28] ggplot2_3.3.3       tidyverse_1.3.1    
+    ## [22] stringr_1.4.0       dplyr_1.0.7         purrr_0.3.4        
+    ## [25] readr_1.4.0         tidyr_1.1.3         tibble_3.1.2       
+    ## [28] ggplot2_3.3.5       tidyverse_1.3.1    
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] colorspace_2.0-0     ellipsis_0.3.2       rprojroot_2.0.2     
-    ##  [4] corpcor_1.6.9        fs_1.5.0             rstudioapi_0.13     
-    ##  [7] remotes_2.3.0        leapp_1.2            bit64_4.0.5         
-    ## [10] AnnotationDbi_1.52.0 fansi_0.4.2          lubridate_1.7.10    
-    ## [13] xml2_1.3.2           splines_4.0.5        cachem_1.0.4        
-    ## [16] knitr_1.33           pkgload_1.2.1        jsonlite_1.7.2      
-    ## [19] annotate_1.68.0      dbplyr_2.1.1         compiler_4.0.5      
-    ## [22] httr_1.4.2           backports_1.2.1      Matrix_1.3-2        
-    ## [25] fastmap_1.1.0        cli_2.5.0            htmltools_0.5.1.1   
-    ## [28] prettyunits_1.1.1    tools_4.0.5          gtable_0.3.0        
-    ## [31] glue_1.4.2           Rcpp_1.0.6           Biobase_2.50.0      
-    ## [34] cellranger_1.1.0     vctrs_0.3.7          xfun_0.22           
-    ## [37] ps_1.6.0             testthat_3.0.2       rvest_1.0.0         
-    ## [40] lifecycle_1.0.0      XML_3.99-0.6         edgeR_3.32.1        
-    ## [43] MASS_7.3-53.1        scales_1.1.1         hms_1.0.0           
-    ## [46] parallel_4.0.5       yaml_2.2.1           memoise_2.0.0       
-    ## [49] stringi_1.5.3        RSQLite_2.2.7        S4Vectors_0.28.1    
-    ## [52] desc_1.3.0           BiocGenerics_0.36.1  pkgbuild_1.2.0      
-    ## [55] rlang_0.4.10         pkgconfig_2.0.3      matrixStats_0.58.0  
-    ## [58] evaluate_0.14        lattice_0.20-41      esaBcv_1.2.1        
-    ## [61] bit_4.0.4            tidyselect_1.1.0     processx_3.5.1      
-    ## [64] plyr_1.8.6           magrittr_2.0.1       R6_2.5.0            
-    ## [67] IRanges_2.24.1       generics_0.1.0       DBI_1.1.1           
-    ## [70] pillar_1.6.0         haven_2.4.1          withr_2.4.2         
-    ## [73] survival_3.2-10      modelr_0.1.8         crayon_1.4.1        
-    ## [76] utf8_1.2.1           rmarkdown_2.7        locfit_1.5-9.4      
-    ## [79] grid_4.0.5           readxl_1.3.1         blob_1.2.1          
-    ## [82] callr_3.7.0          reprex_2.0.0         digest_0.6.27       
-    ## [85] svd_0.5              xtable_1.8-4         stats4_4.0.5        
-    ## [88] munsell_0.5.0        sessioninfo_1.1.1
+    ##  [1] colorspace_2.0-2       ellipsis_0.3.2         rprojroot_2.0.2       
+    ##  [4] corpcor_1.6.9          XVector_0.32.0         fs_1.5.0              
+    ##  [7] rstudioapi_0.13        remotes_2.4.0          leapp_1.2             
+    ## [10] bit64_4.0.5            AnnotationDbi_1.54.1   fansi_0.5.0           
+    ## [13] lubridate_1.7.10       xml2_1.3.2             splines_4.1.0         
+    ## [16] cachem_1.0.5           knitr_1.33             pkgload_1.2.1         
+    ## [19] jsonlite_1.7.2         annotate_1.70.0        dbplyr_2.1.1          
+    ## [22] png_0.1-7              compiler_4.1.0         httr_1.4.2            
+    ## [25] backports_1.2.1        Matrix_1.3-4           fastmap_1.1.0         
+    ## [28] cli_3.0.0              htmltools_0.5.1.1      prettyunits_1.1.1     
+    ## [31] tools_4.1.0            gtable_0.3.0           glue_1.4.2            
+    ## [34] GenomeInfoDbData_1.2.6 Rcpp_1.0.6             Biobase_2.52.0        
+    ## [37] cellranger_1.1.0       vctrs_0.3.8            Biostrings_2.60.1     
+    ## [40] xfun_0.24              ps_1.6.0               testthat_3.0.4        
+    ## [43] rvest_1.0.0            lifecycle_1.0.0        XML_3.99-0.6          
+    ## [46] edgeR_3.34.0           MASS_7.3-54            zlibbioc_1.38.0       
+    ## [49] scales_1.1.1           hms_1.1.0              parallel_4.1.0        
+    ## [52] yaml_2.2.1             memoise_2.0.0          stringi_1.6.2         
+    ## [55] RSQLite_2.2.7          desc_1.3.0             S4Vectors_0.30.0      
+    ## [58] BiocGenerics_0.38.0    pkgbuild_1.2.0         GenomeInfoDb_1.28.1   
+    ## [61] rlang_0.4.11           pkgconfig_2.0.3        bitops_1.0-7          
+    ## [64] matrixStats_0.59.0     evaluate_0.14          lattice_0.20-44       
+    ## [67] esaBcv_1.2.1           bit_4.0.4              tidyselect_1.1.1      
+    ## [70] processx_3.5.2         plyr_1.8.6             magrittr_2.0.1        
+    ## [73] R6_2.5.0               IRanges_2.26.0         generics_0.1.0        
+    ## [76] DBI_1.1.1              pillar_1.6.1           haven_2.4.1           
+    ## [79] withr_2.4.2            survival_3.2-11        KEGGREST_1.32.0       
+    ## [82] RCurl_1.98-1.3         modelr_0.1.8           crayon_1.4.1          
+    ## [85] utf8_1.2.1             rmarkdown_2.9          locfit_1.5-9.4        
+    ## [88] grid_4.1.0             readxl_1.3.1           blob_1.2.1            
+    ## [91] callr_3.7.0            reprex_2.0.0           digest_0.6.27         
+    ## [94] svd_0.5                xtable_1.8-4           stats4_4.1.0          
+    ## [97] munsell_0.5.0          sessioninfo_1.1.1
 
 I’ve also only tried this out on Ubuntu.
 
@@ -186,7 +189,7 @@ should get some coffee. Here is a list of some of my favorite places:
 
 Gerard, David, and Matthew Stephens. 2021. “Unifying and Generalizing
 Methods for Removing Unwanted Variation Based on Negative Controls.”
-*Statistica Sinica* 31 (3): 1–22.
+*Statistica Sinica* 31 (3): 1145–66.
 <https://doi.org/10.5705/ss.202018.0345>.
 
 </div>
